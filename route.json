@@ -206,5 +206,13 @@
     "country": "CA",
     "lat": 66.144878,
     "lon": -65.713606
+  },
+  {
+    "icao": "BGJN",
+    "name": "Ilulissat Airport",
+    "muni": "Ilulissat",
+    "country": "GL",
+    "lat": 69.243202,
+    "lon": -51.057098
   }
 ]
