@@ -198,5 +198,13 @@
     "country": "CA",
     "lat": 63.756402,
     "lon": -68.555801
+  },
+  {
+    "icao": "CYXP",
+    "name": "Pangnirtung Airport",
+    "muni": "Pangnirtung",
+    "country": "CA",
+    "lat": 66.144878,
+    "lon": -65.713606
   }
 ]
