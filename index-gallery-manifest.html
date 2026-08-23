@@ -724,7 +724,7 @@
   .gallery-lightbox-btn{height:36px;border:1px solid rgba(255,255,255,.14);border-radius:999px;background:rgba(255,255,255,.08);color:#fff;padding:0 13px;cursor:pointer;font:800 10px 'Inter',sans-serif;letter-spacing:.05em;text-transform:uppercase;white-space:nowrap}
   .gallery-lightbox-btn:hover{background:rgba(244,197,27,.18);border-color:rgba(244,197,27,.55)}
   .gallery-lightbox-close{position:absolute;top:18px;right:18px;width:40px;height:40px;border-radius:50%;border:1px solid rgba(255,255,255,.2);background:rgba(8,18,28,.7);color:#fff;font-size:22px;cursor:pointer}
-  .gallery-lightbox-counter{position:absolute;top:24px;left:24px;color:rgba(255,255,255,.7);font:800 10px 'Inter',sans-serif;letter-spacing:.08em;text-transform:uppercase}
+  .gallery-lightbox-counter{position:absolute;top:24px;left:24px;color:rgba(255,255,255,.7);font:800 10px 'Inter',sans-serif;letter-spacing:.08em;text-transform:uppercase;display:none}
   .gallery-lightbox.is-presentation .gallery-lightbox-controls{background:rgba(8,18,28,.9)}
   @media(max-width:640px){.gallery-toolbar{justify-content:stretch}.gallery-toolbar-btn{flex:1}.gallery-lightbox{padding:10px}.gallery-lightbox img{max-width:100vw;max-height:88vh}.gallery-lightbox-controls{bottom:10px;max-width:calc(100vw - 20px);overflow:auto}.gallery-lightbox-btn{font-size:9px;padding:0 10px}}
   .support-grid{display:grid;grid-template-columns:minmax(230px,.8fr) minmax(280px,1.2fr);gap:26px;align-items:start}.support-card{padding:20px;border:1px solid rgba(255,255,255,.13);border-radius:18px;background:rgba(255,255,255,.045)}.support-card h3{margin:0 0 10px;font-size:14px}.support-card p{margin:0;color:rgba(255,255,255,.66);font-size:12px;line-height:1.65}.pix-box{display:grid;place-items:center;min-height:250px;border:1px dashed rgba(255,255,255,.18);border-radius:14px;background:rgba(0,0,0,.16)}#pixQr{width:190px;height:190px;padding:10px;background:#fff;border-radius:12px;display:grid;place-items:center}#pixQr img{width:190px;height:190px}.pix-placeholder{max-width:210px;text-align:center;color:#56606a;font-size:11px}.support-paypal{display:inline-flex;align-items:center;justify-content:center;margin-top:16px;width:100%;height:44px;border-radius:999px;background:#fff;color:#102133;text-decoration:none;font-size:11px;font-weight:900;letter-spacing:.08em;text-transform:uppercase}.support-paypal.disabled{opacity:.45;pointer-events:none}.paypal-box{display:flex;align-items:center;justify-content:center;min-height:286px;padding:18px;box-sizing:border-box;border:1px dashed rgba(255,255,255,.18);border-radius:14px;background:rgba(0,0,0,.16)}.paypal-box img{width:250px;height:250px;display:block;object-fit:contain;background:#fff;border-radius:14px;margin:0 auto}.supporter-list{display:grid;gap:8px;margin-top:14px}.supporter{display:flex;justify-content:space-between;gap:14px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.09)}.supporter:last-child{border-bottom:0}.supporter strong{font-size:11px}.supporter span{font-size:9px;color:rgba(255,255,255,.46);text-align:right}
@@ -967,7 +967,7 @@
     <div class="landing-modal-card" role="dialog" aria-modal="true" aria-labelledby="galleryModalTitle">
       <button class="landing-modal-close" type="button" data-close-modal="galleryModal" aria-label="Fechar" data-aria-pt="Fechar" data-aria-en="Close">×</button>
       <div class="landing-modal-head"><div class="landing-modal-kicker" data-pt="RV-10 · WORLD FLIGHT" data-en="RV-10 · WORLD FLIGHT">RV-10 · WORLD FLIGHT</div><div id="galleryModalTitle" class="landing-modal-title" data-pt="Galeria" data-en="Gallery">Galeria</div><div class="landing-modal-sub" data-pt="Screenshots e momentos da reprodução virtual da jornada." data-en="Screenshots and moments from the virtual recreation.">Screenshots e momentos da reprodução virtual da jornada.</div></div>
-      <div class="gallery-toolbar"><button id="galleryPresentationBtn" class="gallery-toolbar-btn" type="button" data-pt="Apresentação aleatória" data-en="Random slideshow">Apresentação aleatória</button></div>
+      <div class="gallery-toolbar"><button id="galleryPresentationBtn" class="gallery-toolbar-btn" type="button" data-pt="Apresentação" data-en="Slideshow">Apresentação</button></div>
       <div id="galleryGrid" class="gallery-grid"><div class="gallery-status" data-pt="Carregando galeria…" data-en="Loading gallery…">Carregando galeria…</div></div>
     </div>
   </div>
@@ -2540,11 +2540,7 @@ async function loadAirportsDatabase(){
     updateGalleryLightbox();
   }
   function randomGalleryNext(){
-    if(landingGalleryItems.length<2){galleryNext();return;}
-    var next=galleryLightboxIndex;
-    while(next===galleryLightboxIndex) next=Math.floor(Math.random()*landingGalleryItems.length);
-    galleryLightboxIndex=next;
-    updateGalleryLightbox();
+    galleryNext();
   }
   function updateGalleryPlayLabel(){
     var btn=document.getElementById('galleryPlayBtn');if(!btn)return;
@@ -2554,7 +2550,7 @@ async function loadAirportsDatabase(){
   function startGalleryPresentation(){
     if(!landingGalleryItems.length)return;
     var box=document.getElementById('galleryLightbox');
-    if(!box.classList.contains('open'))openGalleryLightbox(Math.floor(Math.random()*landingGalleryItems.length));
+    if(!box.classList.contains('open'))openGalleryLightbox(0);
     galleryPresentationRunning=true;
     if(box)box.classList.add('is-presentation');
     updateGalleryPlayLabel();

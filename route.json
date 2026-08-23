@@ -190,5 +190,13 @@
     "country": "CA",
     "lat": 53.3191986084,
     "lon": -60.4258003235
+  },
+  {
+    "icao": "CYFB",
+    "name": "Iqaluit Airport",
+    "muni": "Iqaluit",
+    "country": "CA",
+    "lat": 63.756402,
+    "lon": -68.555801
   }
 ]
