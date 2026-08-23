@@ -736,7 +736,7 @@
   .gallery-lightbox-btn{height:36px;border:1px solid rgba(255,255,255,.14);border-radius:999px;background:rgba(255,255,255,.08);color:#fff;padding:0 13px;cursor:pointer;font:800 10px 'Inter',sans-serif;letter-spacing:.05em;text-transform:uppercase;white-space:nowrap}
   .gallery-lightbox-btn:hover{background:rgba(244,197,27,.18);border-color:rgba(244,197,27,.55)}
   .gallery-lightbox-close{position:absolute;top:18px;right:18px;width:40px;height:40px;border-radius:50%;border:1px solid rgba(255,255,255,.2);background:rgba(8,18,28,.7);color:#fff;font-size:22px;cursor:pointer}
-  .gallery-lightbox-counter{position:absolute;top:24px;left:24px;color:rgba(255,255,255,.7);font:800 10px 'Inter',sans-serif;letter-spacing:.08em;text-transform:uppercase}
+  .gallery-lightbox-counter{position:absolute;top:24px;left:24px;color:rgba(255,255,255,.7);font:800 10px 'Inter',sans-serif;letter-spacing:.08em;text-transform:uppercase;display:none}
   .gallery-lightbox.is-presentation .gallery-lightbox-controls{background:rgba(8,18,28,.9)}
   .gallery-lightbox.gallery-fullscreen-active:not(.gallery-controls-visible) .gallery-lightbox-controls{opacity:0;visibility:hidden;pointer-events:none;transition:opacity .2s ease,visibility .2s ease}
   .gallery-lightbox.gallery-fullscreen-active.gallery-controls-visible .gallery-lightbox-controls{opacity:1;visibility:visible;pointer-events:auto}
@@ -982,7 +982,7 @@
     <div class="landing-modal-card" role="dialog" aria-modal="true" aria-labelledby="galleryModalTitle">
       <button class="landing-modal-close" type="button" data-close-modal="galleryModal" aria-label="Fechar" data-aria-pt="Fechar" data-aria-en="Close">×</button>
       <div class="landing-modal-head"><div class="landing-modal-kicker" data-pt="RV-10 · WORLD FLIGHT" data-en="RV-10 · WORLD FLIGHT">RV-10 · WORLD FLIGHT</div><div id="galleryModalTitle" class="landing-modal-title" data-pt="Galeria" data-en="Gallery">Galeria</div><div class="landing-modal-sub" data-pt="Screenshots e momentos da reprodução virtual da jornada." data-en="Screenshots and moments from the virtual recreation.">Screenshots e momentos da reprodução virtual da jornada.</div></div>
-      <div class="gallery-toolbar"><button id="galleryPresentationBtn" class="gallery-toolbar-btn" type="button" data-pt="Apresentação aleatória" data-en="Random slideshow">Apresentação aleatória</button></div>
+      <div class="gallery-toolbar"><button id="galleryPresentationBtn" class="gallery-toolbar-btn" type="button" data-pt="Apresentação" data-en="Slideshow">Apresentação</button></div>
       <div id="galleryGrid" class="gallery-grid"><div class="gallery-status" data-pt="Carregando galeria…" data-en="Loading gallery…">Carregando galeria…</div></div>
     </div>
   </div>
@@ -2659,11 +2659,7 @@ async function loadAirportsDatabase(){
     updateGalleryLightbox();
   }
   function randomGalleryNext(){
-    if(landingGalleryItems.length<2){galleryNext();return;}
-    var next=galleryLightboxIndex;
-    while(next===galleryLightboxIndex) next=Math.floor(Math.random()*landingGalleryItems.length);
-    galleryLightboxIndex=next;
-    updateGalleryLightbox();
+    galleryNext();
   }
   function updateGalleryPlayLabel(){
     var btn=document.getElementById('galleryPlayBtn');if(!btn)return;
@@ -2673,7 +2669,7 @@ async function loadAirportsDatabase(){
   function startGalleryPresentation(){
     if(!landingGalleryItems.length)return;
     var box=document.getElementById('galleryLightbox');
-    if(!box.classList.contains('open'))openGalleryLightbox(Math.floor(Math.random()*landingGalleryItems.length));
+    if(!box.classList.contains('open'))openGalleryLightbox(0);
     galleryPresentationRunning=true;
     if(box)box.classList.add('is-presentation');
     updateGalleryPlayLabel();
