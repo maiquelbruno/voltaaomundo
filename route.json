@@ -182,5 +182,13 @@
     "country": "CA",
     "lat": 45.467837,
     "lon": -73.742294
+  },
+  {
+    "icao": "CYYR",
+    "name": "Goose Bay Airport",
+    "muni": "Goose Bay",
+    "country": "CA",
+    "lat": 53.3191986084,
+    "lon": -60.4258003235
   }
 ]
