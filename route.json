@@ -214,5 +214,13 @@
     "country": "GL",
     "lat": 69.243202,
     "lon": -51.057098
+  },
+  {
+    "icao": "BIKF",
+    "name": "Keflavik International Airport",
+    "muni": "Reykjavík",
+    "country": "IS",
+    "lat": 63.985001,
+    "lon": -22.6056
   }
 ]
