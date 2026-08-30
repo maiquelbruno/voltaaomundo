@@ -222,13 +222,5 @@
     "country": "IS",
     "lat": 63.985001,
     "lon": -22.6056
-  },
-  {
-    "icao": "EKVG",
-    "name": "Vágar Airport",
-    "muni": "Vágar",
-    "country": "FO",
-    "lat": 62.063256,
-    "lon": -7.275782
   }
 ]
