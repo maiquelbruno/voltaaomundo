@@ -230,5 +230,13 @@
     "country": "FO",
     "lat": 62.063256,
     "lon": -7.275782
+  },
+  {
+    "icao": "EGPK",
+    "name": "Glasgow Prestwick Airport",
+    "muni": "Prestwick, South Ayrshire",
+    "country": "GB",
+    "lat": 55.501499,
+    "lon": -4.577182
   }
 ]
