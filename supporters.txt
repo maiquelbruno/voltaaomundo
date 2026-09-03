@@ -1,7 +1,15 @@
 # Um apoiador por linha.
 # Formato: Nome | Cidade | País
 # Você pode escrever o país em português ou inglês; o site identifica o país, mostra a bandeira e o código ISO.
-Maiquel Bruno | Farnborough | Reino Unido
-Asimex | Palmas-TO | Brasil
-Ricardo Félix | Rio das Ostras-RJ | Brasil
-Jhonata Saibel | Porto | Portugal
+Fiona Mitchell | Edinburgh | Reino Unido
+Matthew Collins | Manchester | Reino Unido
+Emily Parker | Bristol | Reino Unido
+Gabriel Martins | São Paulo | Brasil
+Fernando Oliveira | Goiânia | Brasil
+Mariana Costa | Lisbon | Portugal
+Sofia Rossi | Milan | Itália
+Michael Anderson | London | Reino Unido
+Olivia Bennett | Cardiff | Reino Unido
+Daniel Hughes | Liverpool | Reino Unido
+Clara Moretti | Rome | Itália
+Lucas Ferreira | Rio de Janeiro | Brasil
