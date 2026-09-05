@@ -238,5 +238,13 @@
     "country": "GB",
     "lat": 55.501499,
     "lon": -4.577182
+  },
+  {
+    "icao": "EGSU",
+    "name": "Duxford Aerodrome",
+    "muni": "Duxford, Cambridgeshire",
+    "country": "GB",
+    "lat": 52.090801,
+    "lon": 0.131944
   }
 ]
