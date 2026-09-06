@@ -1198,5 +1198,13 @@
     {
         "name":  "0300.png",
         "path":  "gallery/0300.png"
+    },
+    {
+        "name":  "0301.png",
+        "path":  "gallery/0301.png"
+    },
+    {
+        "name":  "0302.png",
+        "path":  "gallery/0302.png"
     }
 ]
