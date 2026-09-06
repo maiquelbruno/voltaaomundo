@@ -246,5 +246,13 @@
     "country": "GB",
     "lat": 52.090801,
     "lon": 0.131944
+  },
+  {
+    "icao": "LFAT",
+    "name": "Le Touquet-Côte d'Opale Airport",
+    "muni": "Le Touquet-Paris-Plage",
+    "country": "FR",
+    "lat": 50.518284,
+    "lon": 1.621656
   }
 ]
