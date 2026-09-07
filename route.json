@@ -270,5 +270,13 @@
     "country": "FR",
     "lat": 43.377778,
     "lon": 0.161944
+  },
+  {
+    "icao": "LFBT",
+    "name": "Tarbes-Lourdes-Pyrénées Airport",
+    "muni": "Tarbes/Lourdes/Pyrénées",
+    "country": "FR",
+    "lat": 43.178699,
+    "lon": -0.006439
   }
 ]
