@@ -254,5 +254,13 @@
     "country": "FR",
     "lat": 50.518284,
     "lon": 1.621656
+  },
+  {
+    "icao": "LFBS",
+    "name": "Biscarrosse Parentis Airfield",
+    "muni": "Biscarrosse, Landes",
+    "country": "FR",
+    "lat": 44.36756,
+    "lon": -1.133903
   }
 ]
