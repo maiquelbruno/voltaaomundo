@@ -262,5 +262,13 @@
     "country": "FR",
     "lat": 44.36756,
     "lon": -1.133903
+  },
+  {
+    "icao": "FR-1122",
+    "name": "Rabastens de Bigorre Airfield",
+    "muni": "",
+    "country": "FR",
+    "lat": 43.377778,
+    "lon": 0.161944
   }
 ]
