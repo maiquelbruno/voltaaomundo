@@ -278,5 +278,13 @@
     "country": "FR",
     "lat": 43.178699,
     "lon": -0.006439
+  },
+  {
+    "icao": "LEMD",
+    "name": "Adolfo Suárez Madrid–Barajas Airport",
+    "muni": "Madrid",
+    "country": "ES",
+    "lat": 40.493407,
+    "lon": -3.572249
   }
 ]
