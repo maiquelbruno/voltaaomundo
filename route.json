@@ -294,5 +294,13 @@
     "country": "PT",
     "lat": 38.724998,
     "lon": -9.35523
+  },
+  {
+    "icao": "LXGB",
+    "name": "Gibraltar Airport",
+    "muni": "Gibraltar",
+    "country": "GI",
+    "lat": 36.151679,
+    "lon": -5.34978
   }
 ]
