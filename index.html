@@ -1413,13 +1413,14 @@ async function loadAirportsDatabase(){
     }
   };
 
-  // ---------- Globe 3D (CesiumJS, WebGL) ----------
+// ---------- Globe 3D (CesiumJS, WebGL) ----------
   // Esfera terrestre em GPU (WebGL) com pirâmide de imagens de satélite
   // (Esri World Imagery — gratuito com atribuição): zoom contínuo e nítido
   // até o nível de cidade, como no Google Earth. O Cesium é carregado via
   // CDN no <head>. Requer internet; o mapa 2D (Leaflet) continua como
   // alternativa nos outros estilos de mapa.
   var cesiumViewer=null, globeStaticEntities=[], globeTrailEntity=null, globePlaneEntity=null, globeLabelEntities=[];
+  var globeLabelOverlays=[], globeLabelHost=null;
   var globeFollowScale=1, globeFirstLegDone=false, globeFollowTarget=null;
 
   function initGlobe(){
@@ -1459,9 +1460,11 @@ async function loadAirportsDatabase(){
       scene.sun.show=false;
       scene.moon.show=false;
       scene.skyAtmosphere.show=true;
+      // Labels HTML (nome + bandeira) acompanham a câmera a cada render.
+      scene.postRender.addEventListener(function(){ updateGlobeLabelOverlays(); });
       var cam=cesiumViewer.scene.screenSpaceCameraController;
       cam.minimumZoomDistance=80;      // não deixa a câmera entrar dentro da Terra
-      cam.maximumZoomDistance=18000000; // espaço para ver a Terra inteira
+      cam.maximumZoomDistance=16000000; // o globo inteiro entra na tela, como visto do espaço
       var cv=cesiumViewer.canvas;
       cv.style.position='absolute';cv.style.left='0';cv.style.top='0';
       cv.style.width='100%';cv.style.height='100%';
@@ -1484,7 +1487,7 @@ async function loadAirportsDatabase(){
         var d=(typeof e.deltaY==='number')?e.deltaY:0;
         if(d!==0){
           globeFollowScale*=Math.pow(1.12,d/100);
-          globeFollowScale=Math.max(0.08,Math.min(100,globeFollowScale));
+          globeFollowScale=Math.max(0.08,Math.min(500,globeFollowScale));
           requestGlobeRender();
         }
       };
@@ -1526,31 +1529,53 @@ async function loadAirportsDatabase(){
     return Math.max(6000,Math.min(3000000,200000*Math.pow(2,4-(isFinite(z)?z:6))));
   }
 
+  function flagIconUrl(iso2){
+    var cc=(iso2||'').trim().toLowerCase().slice(0,2);
+    return /^[a-z]{2}$/.test(cc) ? 'https://cdnjs.cloudflare.com/ajax/libs/flag-icons/7.2.3/flags/4x3/'+cc+'.svg' : null;
+  }
+  function clearGlobeOverlays(){
+    globeLabelOverlays.forEach(function(o){ if(o.el&&o.el.parentNode) o.el.parentNode.removeChild(o.el); });
+    globeLabelOverlays=[];
+  }
+  // Reposiciona as labels HTML após cada render (segue câmera/globo).
+  function updateGlobeLabelOverlays(){
+    if(!cesiumViewer)return;
+    var scene=cesiumViewer.scene;
+    for(var i=0;i<globeLabelOverlays.length;i++){
+      var o=globeLabelOverlays[i];
+      var pos=null;
+      try{ pos=Cesium.SceneTransforms.worldToWindowCoordinates(scene,Cesium.Cartesian3.fromDegrees(o.wp.lon,o.wp.lat)); }catch(e){ pos=null; }
+      if(!pos){ o.el.style.display='none'; continue; }
+      o.el.style.display='block';
+      o.el.style.left=Math.round(pos.x)+'px';
+      o.el.style.top=Math.round(pos.y)+'px';
+    }
+  }
   function syncGlobeLabels(wps){
     if(!cesiumViewer)return;
     globeLabelEntities.forEach(function(e){ cesiumViewer.entities.remove(e); });
     globeLabelEntities=[];
+    clearGlobeOverlays();
+    if(!globeLabelHost){
+      globeLabelHost=document.createElement('div');
+      globeLabelHost.style.cssText='position:absolute;left:0;top:0;width:100%;height:100%;pointer-events:none;overflow:hidden;z-index:10;';
+      cesiumViewer.container.appendChild(globeLabelHost);
+    }
     (wps||[]).forEach(function(wp){
+      // Ponto do aeroporto (igual ao mapa 2D).
       globeLabelEntities.push(cesiumViewer.entities.add({
         position:Cesium.Cartesian3.fromDegrees(wp.lon,wp.lat),
-        point:{ pixelSize:7, color:Cesium.Color.fromCssColorString('#0b806d'), outlineColor:Cesium.Color.WHITE, outlineWidth:1.5 },
-        label:{
-          text:String(wp.muni||wp.name||wp.icao||'').trim(),
-          font:'600 13px Inter, Arial, sans-serif',
-          fillColor:Cesium.Color.fromCssColorString('#20291f'),
-          backgroundColor:Cesium.Color.WHITE.withAlpha(0.95),
-          showBackground:true,
-          backgroundPadding:new Cesium.Cartesian2(8,5),
-          pixelOffset:new Cesium.Cartesian2(14,0),
-          disableDepthTestDistance:Number.POSITIVE_INFINITY,
-          style:Cesium.LabelStyle.FILL_AND_OUTLINE,
-          outlineColor:Cesium.Color.WHITE.withAlpha(0.85),
-          outlineWidth:2,
-          scaleByDistance:new Cesium.NearFarScalar(30000,1.0,900000,0.45),
-          translucencyByDistance:new Cesium.NearFarScalar(120000,1.0,2400000,0.2)
-        }
+        point:{ pixelSize:7, color:Cesium.Color.fromCssColorString('#0b806d'), outlineColor:Cesium.Color.WHITE, outlineWidth:1.5 }
       }));
+      // Label HTML nítida com o nome e a bandeira do país (igual aos outros mapas).
+      var el=document.createElement('div');
+      el.className='globe-stop-label';
+      el.innerHTML='<span class="lbl-city">' + String(wp.muni||wp.name||wp.icao||'').trim() + '</span>' + flagIconHtml(wp.country);
+      el.style.display='none';
+      globeLabelHost.appendChild(el);
+      globeLabelOverlays.push({wp:wp, el:el});
     });
+    updateGlobeLabelOverlays();
     requestGlobeRender();
   }
 
@@ -1575,6 +1600,7 @@ async function loadAirportsDatabase(){
       if(cesiumViewer){
         globeLabelEntities.forEach(function(e){ cesiumViewer.entities.remove(e); });
         globeLabelEntities=[];
+        clearGlobeOverlays();
         requestGlobeRender();
       }
     }
@@ -1790,59 +1816,93 @@ async function loadAirportsDatabase(){
   }
 
   function animateFlightGlobe(prev,next,onDone,followZoom,token){
-    // Cada nova perna preserva o estado da câmera, mas a lógica de revelar a
-    // face começa desativada; ela só é armada quando o avião realmente sair
-    // da face visível.
-    globeAutoRevealActive=false;
-    var duration=Math.max(300,4200/settings.speed);
-    // Não apaga o rastro anterior ao iniciar uma nova perna. O histórico
-    // inteiro do voo permanece acumulado em globeTrailData.
-    var accumulated=globeTrailData.slice();
-    if(!accumulated.length || accumulated[accumulated.length-1].lat!==prev.lat || accumulated[accumulated.length-1].lon!==prev.lon){
-      accumulated.push({lat:prev.lat,lon:prev.lon});
+    if(!cesiumViewer){onDone(false);return;}
+    var duration=Math.max(1400,Math.min(9000,9000/settings.speed+geodDistanceM(prev,next)*0.0012));
+    // Rastro ACUMULATIVO: o avião deixa a linha pra trás enquanto voa,
+    // formando uma trilha contínua da mesma cor da rota planejada.
+    if(!globeTrailData.length||globeTrailData[globeTrailData.length-1].lat!==prev.lat||globeTrailData[globeTrailData.length-1].lon!==prev.lon){
+      globeTrailData.push({lat:prev.lat,lon:prev.lon});
     }
-    globeTrailData=accumulated;
-    globePlaneEl={_lat:prev.lat,_lon:prev.lon,_bearing:bearing(prev,next)};
-    scheduleGlobeRender();
+    if(!globeTrailEntity){
+      globeTrailEntity=cesiumViewer.entities.add({
+        polyline:{
+          // CallbackProperty: o Cesium reavalia os pontos em todo frame,
+          // então o rastro cresce na tela sem depender de troca manual.
+          positions:new Cesium.CallbackProperty(function(){ return citiesToDegreesArray(globeTrailData); }, false),
+          width:3,
+          material:new Cesium.PolylineDashMaterialProperty({ color:Cesium.Color.fromCssColorString('#DC3B2E').withAlpha(0.9), dashLength:18, gap:12 }),
+          arcType:Cesium.ArcType.GEODESIC
+        }
+      });
+    }
+    if(!globePlaneEntity){
+      globePlaneEntity=cesiumViewer.entities.add({
+        position:Cesium.Cartesian3.fromDegrees(prev.lon,prev.lat),
+        billboard:{ image:PLANE_ICON_SRC, scale:0.11, rotation:0,
+          color:Cesium.Color.WHITE,
+          scaleByDistance:new Cesium.NearFarScalar(30000,0.8,18000000,0.55) }
+      });
+    }
+    globePlaneEntity.position=Cesium.Cartesian3.fromDegrees(prev.lon,prev.lat);
+    // As labels vão se fixando no mapa aos poucos: cada cidade visitada
+    // permanece com o nome e a bandeira enquanto o avião segue em frente.
+    function pushLabelIfMissing(wp){
+      for(var k=0;k<globePlaybackLabels.length;k++){
+        var x=globePlaybackLabels[k];
+        if(x.lat===wp.lat && x.lon===wp.lon)return;
+      }
+      globePlaybackLabels.push(wp);
+    }
+    pushLabelIfMissing(prev);
+    syncGlobeLabels(globePlaybackLabels);
+    globeAutoFollowPaused=false;
+    setGlobeController(false);
+
     var settled=false,start=null;
+    var baseH=legViewHeight(prev,next);
+    followGlobeAircraft(prev.lat,prev.lon,baseH*globeFollowScale,bearing(prev,next));
+
     function cleanup(aborted){
       if(settled)return;settled=true;
       if(playbackRaf){cancelAnimationFrame(playbackRaf);playbackRaf=null;}
       if(activePlaybackCancel===cancel)activePlaybackCancel=null;
+      setGlobeController(true);
+      releaseGlobeFollow();
+      globeFollowTarget=null;
       if(!aborted){
-        var full=geodesicPoints(prev,next,48);
-        var base=globeTrailData.slice();
-        if(base.length && base[base.length-1].lat===prev.lat && base[base.length-1].lon===prev.lon) base.pop();
-        globeTrailData=base.concat(full);
-        globePlaybackLabels.push(next);
+        // Como no mapa 2D: a label da cidade (nome + bandeira) surge na chegada.
+        pushLabelIfMissing(next);
+        syncGlobeLabels(globePlaybackLabels);
+        requestGlobeRender();
       }
-      scheduleGlobeRender();
       onDone(!!aborted);
     }
     function cancel(){cleanup(true);}
     activePlaybackCancel=cancel;
+
     function step(ts){
       if(token!==playbackToken){cleanup(true);return;}
       if(start===null)start=ts;
       var t=Math.min(1,(ts-start)/duration),e=easeInOutQuad(t),pos=greatCirclePosition(prev,next,e);
-      globePlaneEl._lat=pos.lat;globePlaneEl._lon=pos.lon;
-      // Só revela a outra face quando o avião está saindo da face visível.
-      // Enquanto ele estiver visível, a Terra permanece completamente estável.
-      var globeRotated=autoRevealGlobeAircraft(pos.lat,pos.lon);
-      var current=geodesicPoints(prev,pos,Math.max(2,Math.ceil(36*Math.max(e,.03))));
-      var base=accumulated.slice();
-      if(base.length && base[base.length-1].lat===prev.lat && base[base.length-1].lon===prev.lon) base.pop();
-      globeTrailData=base.concat(current);
-      // Durante a maior parte da perna, a Terra permanece estável.
-      // A única exceção é quando o avião realmente entra na face oculta:
-      // nesse momento autoRevealGlobeAircraft() gira a Terra lentamente em
-      // direção ao avião, sem retornar para a posição anterior.
-      scheduleGlobeRender();
+      globePlaneEntity.position=Cesium.Cartesian3.fromDegrees(pos.lon,pos.lat);
+      globePlaneEntity.billboard.rotation=Cesium.Math.toRadians(-bearing(prev,next));
+      globeTrailData.push(pos);
+      if(globeTrailData.length>5000)globeTrailData.splice(0,globeTrailData.length-5000);
+      if(!globeAutoFollowPaused){
+        followGlobeAircraft(pos.lat,pos.lon,baseH*globeFollowScale,bearing(prev,next));
+      }else{
+        var sp=globeScreenPos(pos.lat,pos.lon);
+        if(sp&&sp.off){
+          globeAutoFollowPaused=false;
+          setGlobeController(false);
+          followGlobeAircraft(pos.lat,pos.lon,baseH*globeFollowScale,bearing(prev,next));
+        }
+      }
+      requestGlobeRender();
       if(t<1)playbackRaf=requestAnimationFrame(step);else cleanup(false);
     }
     playbackRaf=requestAnimationFrame(step);
   }
-
   // ---------- Animation ----------
 
   // A câmera acompanha o avião, mas nunca força novamente o zoom escolhido
