@@ -302,5 +302,13 @@
     "country": "GI",
     "lat": 36.151679,
     "lon": -5.34978
+  },
+  {
+    "icao": "GEML",
+    "name": "Melilla Airport",
+    "muni": "Melilla",
+    "country": "ES",
+    "lat": 35.2798,
+    "lon": -2.95626
   }
 ]
