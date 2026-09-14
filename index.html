@@ -251,6 +251,10 @@
     background:rgba(255,255,255,.10); color:#fff; cursor:pointer; font:700 11px 'Inter',sans-serif;}
   #previewControls button:hover{background:rgba(255,255,255,.18);}
   #previewControls button:disabled{opacity:.45;cursor:default;}
+  #previewSpeedRange{width:110px;margin:0 2px;accent-color:#fff;cursor:pointer;}
+  #previewSpeedValue{font:700 10px 'JetBrains Mono',monospace;min-width:38px;text-align:right;}
+  #app.playback-mode.playback-paused .leaflet-control-zoom{display:block !important;}
+  #app.playback-mode.playback-paused #map{cursor:grab;}
   #previewLoading{position:fixed;inset:0;z-index:8000;display:flex;align-items:center;justify-content:center;
     background:rgba(5,10,15,.92);color:#fff;font:600 14px 'Inter',sans-serif;letter-spacing:.03em;}
   #previewLoading.hidden{display:none;}
@@ -1081,16 +1085,9 @@
       <option value="globe">Globo 3D</option>
     </select>
     <button id="previewPauseBtn" type="button" aria-label="Pausar reprodução">⏸ Pausar</button>
-    <label for="previewSpeedSelect">Velocidade</label>
-    <select id="previewSpeedSelect" aria-label="Velocidade da reprodução">
-      <option value="0.25">0,25×</option>
-      <option value="0.5">0,5×</option>
-      <option value="0.75">0,75×</option>
-      <option value="1" selected>1×</option>
-      <option value="1.5">1,5×</option>
-      <option value="2">2×</option>
-      <option value="3">3×</option>
-    </select>
+    <label for="previewSpeedRange">Velocidade</label>
+    <input id="previewSpeedRange" type="range" min="0.10" max="3.00" step="0.05" value="1" aria-label="Velocidade da reprodução">
+    <span id="previewSpeedValue">1,00×</span>
     <span id="previewStatus">PREVIEW</span>
   </div>
 
@@ -1412,10 +1409,34 @@ async function loadAirportsDatabase(){
 
   function togglePreviewPause(){
     if(!isBusy) return;
+    var wasPaused=previewPaused;
     previewPaused=!previewPaused;
+    var app=document.getElementById('app');
+    app.classList.toggle('playback-paused',previewPaused);
+    // Ao pausar, a câmera deixa de ser controlada pela animação para que
+    // o usuário possa dar zoom, arrastar e explorar livremente o mapa.
+    if(previewPaused){
+      if(playbackRaf){cancelAnimationFrame(playbackRaf);playbackRaf=null;}
+      if(cesiumViewer && settings.mapStyle==='globe'){
+        globeAutoFollowPaused=true;
+        releaseGlobeFollow();
+        setGlobeController(true);
+        var c=cesiumViewer.scene.screenSpaceCameraController;
+        c.enableInputs=true;c.enableZoom=true;c.enableRotate=true;c.enableTranslate=true;c.enableTilt=true;
+        requestGlobeRender();
+      }
+    }else{
+      // Ao retomar, a própria perna atual continua do ponto exato onde parou.
+      // O detalhe importante é chamar playbackResume enquanto a reprodução
+      // ainda está marcada como pausada; a versão anterior invertia a flag
+      // antes dessa chamada e o callback saía imediatamente sem criar um novo frame.
+      if(wasPaused && playbackResume) playbackResume();
+      if(cesiumViewer && settings.mapStyle==='globe'){
+        setGlobeController(false);
+      }
+    }
     updatePreviewPauseButton();
     setPreviewStatus(previewPaused ? 'PAUSADO' : 'REPRODUZINDO');
-    if(!previewPaused && playbackResume) playbackResume();
   }
 
   function schedulePreviewLoop(){
@@ -1509,7 +1530,7 @@ async function loadAirportsDatabase(){
       };
       var onGlobeWheel=function(e){
         if(!document.getElementById('app').classList.contains('playback-mode'))return;
-        if(globeAutoFollowPaused)return;   // em visão livre, o zoom é do Cesium
+        if(previewPaused || globeAutoFollowPaused)return;   // pausado/visão livre: o zoom é 100% do Cesium
         e.preventDefault();
         var d=(typeof e.deltaY==='number')?e.deltaY:0;
         if(d!==0){
@@ -1841,6 +1862,7 @@ async function loadAirportsDatabase(){
   function setGlobeController(enabled){
     if(!cesiumViewer)return;
     var c=cesiumViewer.scene.screenSpaceCameraController;
+    c.enableInputs=enabled;
     c.enableRotate=enabled;c.enableZoom=enabled;c.enableTranslate=enabled;c.enableTilt=enabled;
   }
   // Sai do modo "seguir o avião" mantendo posição/orientação atuais: a câmera
@@ -1952,7 +1974,7 @@ async function loadAirportsDatabase(){
       onDone(!!aborted);
     }
     function cancel(){cleanup(true);}
-    function resume(){ if(token!==playbackToken || !previewPaused) return; playbackPausedResumeFrame(); }
+    function resume(){ if(token!==playbackToken) return; previewPaused=false; var app=document.getElementById('app'); app.classList.remove('playback-paused'); lastTs=null; if(settings.mapStyle==='globe') setGlobeController(false); playbackPausedResumeFrame(); }
     function playbackPausedResumeFrame(){ playbackRaf=requestAnimationFrame(step); }
     activePlaybackCancel=cancel;
     playbackResume=resume;
@@ -2017,7 +2039,7 @@ async function loadAirportsDatabase(){
       onDone(!!aborted);
     }
     function cancel(){ cleanup(true); }
-    function resume(){ if(token!==playbackToken || !previewPaused) return; playbackRaf=requestAnimationFrame(step); }
+    function resume(){ if(token!==playbackToken) return; previewPaused=false; var app=document.getElementById('app'); app.classList.remove('playback-paused'); lastTs=null; playbackRaf=requestAnimationFrame(step); }
     activePlaybackCancel = cancel;
     playbackResume = resume;
 
@@ -2137,6 +2159,7 @@ async function loadAirportsDatabase(){
     playbackToken++;
     var token = playbackToken;
     previewPaused = false;
+    document.getElementById('app').classList.remove('playback-paused');
     playbackResume = null;
     updatePreviewPauseButton();
     playbackUserZoomed = false;
@@ -2211,7 +2234,7 @@ async function loadAirportsDatabase(){
     activeCenterCancel = null;
     activePlaybackCancel = null;
     isBusy = false;
-    document.getElementById('app').classList.remove('playback-mode','playback-finished');
+    document.getElementById('app').classList.remove('playback-mode','playback-finished','playback-paused');
     var playBtn = document.getElementById('playBtn');
     playBtn.disabled = false;
     playBtn.innerHTML = '<span class="ico">&#9654;</span> Reproduzir voo';
@@ -3335,20 +3358,26 @@ async function loadAirportsDatabase(){
     var select=document.getElementById('previewMapSelect');
     select.value='voyager';
     var pauseBtn=document.getElementById('previewPauseBtn');
-    var speedSelect=document.getElementById('previewSpeedSelect');
+    var speedRange=document.getElementById('previewSpeedRange');
+    var speedValue=document.getElementById('previewSpeedValue');
     if(pauseBtn && !pauseBtn._bound){
       pauseBtn._bound=true;
       pauseBtn.addEventListener('click',togglePreviewPause);
     }
-    if(speedSelect && !speedSelect._bound){
-      speedSelect._bound=true;
-      speedSelect.value=String(previewSpeed);
-      speedSelect.addEventListener('change',function(){
-        var v=Number(speedSelect.value);
+    function refreshPreviewSpeed(){
+      if(speedValue) speedValue.textContent=previewSpeed.toFixed(2).replace('.',',')+'×';
+    }
+    if(speedRange && !speedRange._bound){
+      speedRange._bound=true;
+      speedRange.value=String(previewSpeed);
+      speedRange.addEventListener('input',function(){
+        var v=Number(speedRange.value);
         if(isFinite(v) && v>0) previewSpeed=v;
+        refreshPreviewSpeed();
         setPreviewStatus(previewPaused ? 'PAUSADO' : 'REPRODUZINDO');
       });
     }
+    refreshPreviewSpeed();
     updatePreviewPauseButton();
     select.addEventListener('change', async function(){
       if(previewChangingMap || !previewRouteLoaded || route.length < 2) return;
