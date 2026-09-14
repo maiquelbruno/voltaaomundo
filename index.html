@@ -1403,8 +1403,8 @@ async function loadAirportsDatabase(){
   var MAP_STYLES = {
     voyager: {
       label: 'Mapa OpenStreetMap',
-      url: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-      options: { attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors', maxZoom: 19 }
+      url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+      options: { attribution: '&copy; OpenStreetMap contributors', subdomains: 'abc', maxZoom: 19 }
     },
     opentopo: {
       label: 'OpenTopo',
@@ -1756,7 +1756,7 @@ async function loadAirportsDatabase(){
   function fitToRoute(){
     if(!route.length) return;
     if(settings.mapStyle === 'globe' && globeReady){
-      if(route.length){ var c=route.reduce(function(a,w){return {lat:a.lat+w.lat,lon:a.lon+w.lon};},{lat:0,lon:0}); c.lat/=route.length; c.lon/=route.length; globeCenter=c; globeZoom=.98; scheduleGlobeRender(); }
+      fitGlobeToRoute();
       return;
     }
     var bounds = L.latLngBounds(route.map(function(wp){ return [wp.lat, wp.lon]; }));
@@ -1780,39 +1780,84 @@ async function loadAirportsDatabase(){
   }
 
   function centerOnPoint(p,zoom,token){return new Promise(function(resolve){if(token!==playbackToken){resolve(false);return;}if(settings.mapStyle==='globe'&&globeReady){
-      // NO GIRO AUTOMÁTICO DURANTE O VOO.
-      // A posição/orientação da Terra fica exatamente como o usuário deixou.
-      // O avião continua avançando normalmente; nenhum frame altera globeCenter.
-      if(globeViewAnimRaf){cancelAnimationFrame(globeViewAnimRaf);globeViewAnimRaf=null;}
-      var targetZoom=playbackUserZoomed?playbackZoom:globeZoom;
-      if(!playbackUserZoomed) globeZoom=targetZoom;
-      scheduleGlobeRender();
-      setTimeout(function(){resolve(token===playbackToken);},80);
+      // No globo a câmera acompanha o avião dentro de animateFlightGlobe().
+      // Aqui apenas rearmamos o acompanhamento automático e apontamos a
+      // câmera para a partida da perna.
+      globeAutoFollowPaused=false;
+      if(cesiumViewer){
+        // Vista de mapa (quase de cima, norte para cima) no aeroporto,
+        // parecido com o modo "street" do Google Earth; a câmera só se afasta
+        // para virar globo conforme o avião voa.
+        var airportH=Math.min(zoomToHeight(zoom),60000);
+        cesiumViewer.camera.lookAt(Cesium.Cartesian3.fromDegrees(p.lon,p.lat),
+          new Cesium.HeadingPitchRange(0,Cesium.Math.toRadians(-89.2),airportH));
+        requestGlobeRender();
+      }
+      // No primeiro aeroporto, espera alguns instantes para os tiles de
+      // satélite carregarem; só então o avião decola (senão o voo começa
+      // "sem visual" e parece que o avião nem piscou).
+      setTimeout(function(){resolve(token===playbackToken);}, globeFirstLegDone?80:1400);
+      globeFirstLegDone=true;
       return;
     }var settled=false;function finish(ok){if(settled)return;settled=true;map.off('moveend',finish);if(activeCenterCancel===cancel)activeCenterCancel=null;resolve(ok!==false);}function cancel(){finish(false);}activeCenterCancel=cancel;var targetZoom=playbackUserZoomed?playbackZoom:zoom;map.once('moveend',finish);map.flyTo([p.lat,p.lon],targetZoom,{duration:.7});setTimeout(function(){finish(true);},850);});}
 
-  // Revela a outra face somente quando necessário.
-  // Ao iniciar a revelação, ela continua acompanhando suavemente o avião até
-  // que ele fique confortavelmente dentro da face visível. Há histerese: depois
-  // que a rotação começa, ela não é interrompida no primeiro frame em que o
-  // avião cruza a borda. Isso evita o efeito anterior de girar e voltar.
-  var globeAutoRevealActive=false;
-  function autoRevealGlobeAircraft(lat,lon){
-    var v=worldVec(lat,lon),basis=globeBasis(globeCenter.lat,globeCenter.lon);
-    var front=dot3(v,basis.f);
+// Acompanhamento do avião no globo (estilo Google Earth). A câmera segue o
+  // avião de curta distância, com o mundo girando sob ela. Se o usuário
+  // arrastar o globo ou usar o zoom, a visão fica livre enquanto o avião
+  // permanecer na faixa central da tela; quando ele se aproxima da borda,
+  // o controle volta automaticamente ao voo.
+  var globeAutoFollowPaused=false;
 
-    // A Terra permanece parada enquanto o avião estiver confortavelmente visível.
-    // Quando ele se aproxima da borda da face visível, armamos o acompanhamento.
-    if(!globeAutoRevealActive && front>0.28) return false;
-    globeAutoRevealActive=true;
+  // Liga/desliga os controles de câmera do Cesium. Durante o acompanhamento
+  // do voo eles ficam desligados (a câmera é quem segue o avião); na visão
+  // livre o Cesium volta a controlar a câmera normalmente.
+  function setGlobeController(enabled){
+    if(!cesiumViewer)return;
+    var c=cesiumViewer.scene.screenSpaceCameraController;
+    c.enableRotate=enabled;c.enableZoom=enabled;c.enableTranslate=enabled;c.enableTilt=enabled;
+  }
+  // Sai do modo "seguir o avião" mantendo posição/orientação atuais: a câmera
+  // volta ao quadro normal do mundo, sem âncora antiga (evita o globo "caindo
+  // num buraco" quando o usuário arrasta durante o voo).
+  function releaseGlobeFollow(){
+    if(!cesiumViewer)return;
+    try{ cesiumViewer.camera.lookAtTransform(Cesium.Matrix4.IDENTITY); }catch(e){}
+  }
 
-    // A partir deste ponto a câmera fica TRAVADA no avião.
-    // Em vez de uma rotação independente (que podia parar no meio do caminho),
-    // o centro do globo acompanha exatamente a posição do avião a cada frame.
-    // Assim a Terra gira junto com o voo, mantendo o avião no centro da face.
-    globeCenter.lat=Math.max(-80,Math.min(80,lat));
-    globeCenter.lon=normLon(lon);
-    return true;
+  function followGlobeAircraft(lat,lon,range,headingDeg){
+    if(!cesiumViewer)return;
+    // Trava o afastamento máximo em 16 Mm: dá para ver o globo inteiro
+    // (toda a trajetória) sem ficar tão longe que vire um pontinho no escuro.
+    range=Math.max(1,Math.min(range,16000000));
+    // Vista SEMPRE norte-para-cima e quase de cima (como um mapa). Assim o
+    // avião GIRA conforme a angulação real de cada perna (sua proa) em vez de
+    // ficar "fixo na vertical" — e no zoom máximo aparece o globo completo.
+    // A câmera "corre atrás" do avião com suavidade, então ele se move na
+    // tela em vez de ficar pregado no centro.
+    var target=Cesium.Cartesian3.fromDegrees(lon,lat);
+    if(globeFollowTarget){
+      var eased=new Cesium.Cartesian3();
+      Cesium.Cartesian3.lerp(globeFollowTarget,target,0.12,eased);
+      globeFollowTarget=eased;
+    }else{
+      globeFollowTarget=target.clone();
+    }
+    var hpr=new Cesium.HeadingPitchRange(0,Cesium.Math.toRadians(-89.4),range);
+    cesiumViewer.camera.lookAt(globeFollowTarget,hpr);
+    requestGlobeRender();
+  }
+
+  // Projeção do avião na tela. Devolve {off:true} quando ele sai da faixa
+  // central de visão livre (aí o acompanhamento volta automaticamente).
+  function globeScreenPos(lat,lon){
+    if(!cesiumViewer)return null;
+    try{
+      var scr=Cesium.SceneTransforms.worldToWindowCoordinates(cesiumViewer.scene,Cesium.Cartesian3.fromDegrees(lon,lat));
+      if(!scr)return {off:true};
+      var cw=cesiumViewer.canvas.clientWidth,ch=cesiumViewer.canvas.clientHeight;
+      if(!cw||!ch)return {off:true};
+      return {off: scr.x<cw*0.10||scr.x>cw*0.90||scr.y<ch*0.16||scr.y>ch*0.84};
+    }catch(e){ return null; }
   }
 
   function animateFlightGlobe(prev,next,onDone,followZoom,token){
