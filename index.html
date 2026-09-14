@@ -1080,6 +1080,17 @@
       <option value="opentopo">OpenTopo</option>
       <option value="globe">Globo 3D</option>
     </select>
+    <button id="previewPauseBtn" type="button" aria-label="Pausar reprodução">⏸ Pausar</button>
+    <label for="previewSpeedSelect">Velocidade</label>
+    <select id="previewSpeedSelect" aria-label="Velocidade da reprodução">
+      <option value="0.25">0,25×</option>
+      <option value="0.5">0,5×</option>
+      <option value="0.75">0,75×</option>
+      <option value="1" selected>1×</option>
+      <option value="1.5">1,5×</option>
+      <option value="2">2×</option>
+      <option value="3">3×</option>
+    </select>
     <span id="previewStatus">PREVIEW</span>
   </div>
 
@@ -1274,6 +1285,7 @@ async function loadAirportsDatabase(){
   var map, planeMarker, baseMapLayer;
   var playbackToken=0, playbackRaf=null, activePlaybackCancel=null, activeCenterCancel=null;
   var playbackUserZoomed=false, playbackZoom=null;
+  var previewPaused=false, previewSpeed=1, playbackResume=null;
   var markerLayer, lineLayer, playbackTrailLayer;
   var isBusy=false;
   var previewLoopTimer=null, previewRouteLoaded=false, previewChangingMap=false;
@@ -1389,6 +1401,21 @@ async function loadAirportsDatabase(){
   function setPreviewStatus(text){
     var el=document.getElementById('previewStatus');
     if(el) el.textContent=text;
+  }
+
+  function updatePreviewPauseButton(){
+    var btn=document.getElementById('previewPauseBtn');
+    if(!btn) return;
+    btn.textContent=previewPaused ? '▶ Retomar' : '⏸ Pausar';
+    btn.setAttribute('aria-label', previewPaused ? 'Retomar reprodução' : 'Pausar reprodução');
+  }
+
+  function togglePreviewPause(){
+    if(!isBusy) return;
+    previewPaused=!previewPaused;
+    updatePreviewPauseButton();
+    setPreviewStatus(previewPaused ? 'PAUSADO' : 'REPRODUZINDO');
+    if(!previewPaused && playbackResume) playbackResume();
   }
 
   function schedulePreviewLoop(){
@@ -1863,6 +1890,7 @@ async function loadAirportsDatabase(){
   function animateFlightGlobe(prev,next,onDone,followZoom,token){
     if(!cesiumViewer){onDone(false);return;}
     var duration=Math.max(1400,Math.min(9000,9000/settings.speed+geodDistanceM(prev,next)*0.0012));
+    var elapsed=0,lastTs=null;
     // Rastro ACUMULATIVO: o avião deixa a linha pra trás enquanto voa,
     // formando uma trilha contínua da mesma cor da rota planejada.
     if(!globeTrailData.length||globeTrailData[globeTrailData.length-1].lat!==prev.lat||globeTrailData[globeTrailData.length-1].lon!==prev.lon){
@@ -1910,6 +1938,7 @@ async function loadAirportsDatabase(){
     function cleanup(aborted){
       if(settled)return;settled=true;
       if(playbackRaf){cancelAnimationFrame(playbackRaf);playbackRaf=null;}
+      if(playbackResume===resume){playbackResume=null;}
       if(activePlaybackCancel===cancel)activePlaybackCancel=null;
       setGlobeController(true);
       releaseGlobeFollow();
@@ -1923,12 +1952,17 @@ async function loadAirportsDatabase(){
       onDone(!!aborted);
     }
     function cancel(){cleanup(true);}
+    function resume(){ if(token!==playbackToken || !previewPaused) return; playbackPausedResumeFrame(); }
+    function playbackPausedResumeFrame(){ playbackRaf=requestAnimationFrame(step); }
     activePlaybackCancel=cancel;
+    playbackResume=resume;
 
     function step(ts){
       if(token!==playbackToken){cleanup(true);return;}
-      if(start===null)start=ts;
-      var t=Math.min(1,(ts-start)/duration),e=easeInOutQuad(t),pos=greatCirclePosition(prev,next,e);
+      if(previewPaused){ playbackRaf=null; return; }
+      if(lastTs===null)lastTs=ts;
+      else { elapsed += (ts-lastTs)*previewSpeed; lastTs=ts; }
+      var t=Math.min(1,elapsed/duration),e=easeInOutQuad(t),pos=greatCirclePosition(prev,next,e);
       globePlaneEntity.position=Cesium.Cartesian3.fromDegrees(pos.lon,pos.lat);
       globePlaneEntity.billboard.rotation=Cesium.Math.toRadians(-bearing(prev,next));
       globeTrailData.push(pos);
@@ -1959,6 +1993,7 @@ async function loadAirportsDatabase(){
     if(planeMarker){ map.removeLayer(planeMarker); planeMarker = null; }
     var brg = bearing(prev, next);
     var duration = Math.max(300, 4200 / settings.speed);
+    var elapsed = 0, lastTs = null;
     var flying = L.marker([prev.lat, prev.lon], { icon: planeDivIcon(brg, true), zIndexOffset: 1000 }).addTo(map);
     // Cada perna possui seu próprio grupo de rastro. Assim o rastro já percorrido
     // permanece na tela enquanto a perna seguinte começa, sem desenhar a rota
@@ -1971,6 +2006,7 @@ async function loadAirportsDatabase(){
       if(settled) return;
       settled = true;
       if(playbackRaf){ cancelAnimationFrame(playbackRaf); playbackRaf = null; }
+      if(playbackResume === resume) playbackResume = null;
       if(activePlaybackCancel === cancel) activePlaybackCancel = null;
       if(map.hasLayer(flying)) map.removeLayer(flying);
       // O rastro NÃO é removido ao terminar a perna. Ele permanece visível
@@ -1981,7 +2017,9 @@ async function loadAirportsDatabase(){
       onDone(!!aborted);
     }
     function cancel(){ cleanup(true); }
+    function resume(){ if(token!==playbackToken || !previewPaused) return; playbackRaf=requestAnimationFrame(step); }
     activePlaybackCancel = cancel;
+    playbackResume = resume;
 
     function drawLiveTrail(t){
       // Desenha SOMENTE o trecho já percorrido. A versão anterior gerava
@@ -2007,8 +2045,10 @@ async function loadAirportsDatabase(){
 
     function step(ts){
       if(token !== playbackToken){ cleanup(true); return; }
-      if(start === null) start = ts;
-      var t = Math.min(1, (ts - start) / duration);
+      if(previewPaused){ playbackRaf=null; return; }
+      if(lastTs===null) lastTs=ts;
+      else { elapsed += (ts-lastTs)*previewSpeed; lastTs=ts; }
+      var t = Math.min(1, elapsed / duration);
       var e = easeInOutQuad(t);
       var pos = greatCirclePosition(prev, next, e);
       flying.setLatLng([pos.lat, pos.lon]);
@@ -2096,6 +2136,9 @@ async function loadAirportsDatabase(){
     isBusy = true;
     playbackToken++;
     var token = playbackToken;
+    previewPaused = false;
+    playbackResume = null;
+    updatePreviewPauseButton();
     playbackUserZoomed = false;
     playbackZoom = null;
     setSearchEnabled(false);
@@ -2159,6 +2202,9 @@ async function loadAirportsDatabase(){
     if(!isBusy) return;
     playMusicForContext('intro', true);
     playbackToken++;
+    previewPaused=false;
+    playbackResume=null;
+    updatePreviewPauseButton();
     if(activeCenterCancel) activeCenterCancel();
     if(activePlaybackCancel) activePlaybackCancel();
     if(playbackRaf){ cancelAnimationFrame(playbackRaf); playbackRaf = null; }
@@ -3288,6 +3334,22 @@ async function loadAirportsDatabase(){
     renderLog();
     var select=document.getElementById('previewMapSelect');
     select.value='voyager';
+    var pauseBtn=document.getElementById('previewPauseBtn');
+    var speedSelect=document.getElementById('previewSpeedSelect');
+    if(pauseBtn && !pauseBtn._bound){
+      pauseBtn._bound=true;
+      pauseBtn.addEventListener('click',togglePreviewPause);
+    }
+    if(speedSelect && !speedSelect._bound){
+      speedSelect._bound=true;
+      speedSelect.value=String(previewSpeed);
+      speedSelect.addEventListener('change',function(){
+        var v=Number(speedSelect.value);
+        if(isFinite(v) && v>0) previewSpeed=v;
+        setPreviewStatus(previewPaused ? 'PAUSADO' : 'REPRODUZINDO');
+      });
+    }
+    updatePreviewPauseButton();
     select.addEventListener('change', async function(){
       if(previewChangingMap || !previewRouteLoaded || route.length < 2) return;
       previewChangingMap=true;
@@ -3296,6 +3358,9 @@ async function loadAirportsDatabase(){
         // Primeiro invalida/cancela a reprodução atual para evitar que a animação
         // anterior continue concorrendo com o novo mapa.
         playbackToken++;
+        previewPaused=false;
+        playbackResume=null;
+        updatePreviewPauseButton();
         if(activeCenterCancel) activeCenterCancel();
         if(activePlaybackCancel) activePlaybackCancel();
         if(playbackRaf){ cancelAnimationFrame(playbackRaf); playbackRaf=null; }
