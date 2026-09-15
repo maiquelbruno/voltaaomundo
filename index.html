@@ -255,6 +255,17 @@
   #previewSpeedValue{font:700 10px 'JetBrains Mono',monospace;min-width:38px;text-align:right;}
   #app.playback-mode.playback-paused .leaflet-control-zoom{display:block !important;}
   #app.playback-mode.playback-paused #map{cursor:grab;}
+  #journeyStatus{position:fixed;left:14px;bottom:14px;z-index:7000;width:min(360px,calc(100vw - 28px));padding:12px 14px;background:rgba(20,24,20,.88);color:#fff;border:1px solid rgba(255,255,255,.20);border-radius:10px;box-shadow:0 4px 18px rgba(0,0,0,.28);backdrop-filter:blur(6px);font-family:'Inter',sans-serif;}
+  #journeyStatus .js-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px;}
+  #journeyStatus .js-title{font-size:10px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;opacity:.72;}
+  #journeyStatus .js-progress{font:800 10px 'JetBrains Mono',monospace;color:#f4c51b;}
+  #journeyStatus .js-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+  #journeyStatus .js-item{min-width:0;}
+  #journeyStatus .js-label{display:block;font-size:8px;letter-spacing:.10em;text-transform:uppercase;opacity:.52;margin-bottom:3px;}
+  #journeyStatus .js-city{display:block;font-size:12px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  #journeyStatus .js-meta{display:block;margin-top:3px;font:600 9px 'JetBrains Mono',monospace;opacity:.70;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  #journeyStatus .js-stats{display:flex;gap:14px;margin-top:10px;padding-top:9px;border-top:1px solid rgba(255,255,255,.12);font:700 9px 'JetBrains Mono',monospace;opacity:.78;}
+  #journeyStatus .js-stats span{white-space:nowrap;}
   #previewLoading{position:fixed;inset:0;z-index:8000;display:flex;align-items:center;justify-content:center;
     background:rgba(5,10,15,.92);color:#fff;font:600 14px 'Inter',sans-serif;letter-spacing:.03em;}
   #previewLoading.hidden{display:none;}
@@ -262,6 +273,7 @@
     #previewControls{top:8px;right:8px;left:8px;justify-content:space-between;gap:5px;padding:7px;}
     #previewMapSelect{max-width:130px;}
     #previewStatus{display:none;}
+    #journeyStatus{left:8px;bottom:8px;width:calc(100vw - 16px);padding:10px 12px;}
   }
 
 
@@ -1090,6 +1102,14 @@
     <span id="previewSpeedValue">1,00×</span>
     <span id="previewStatus">PREVIEW</span>
   </div>
+  <aside id="journeyStatus" aria-label="Acompanhamento da viagem">
+    <div class="js-head"><span class="js-title">Acompanhamento da viagem</span><span class="js-progress" id="journeyProgress">—</span></div>
+    <div class="js-grid">
+      <div class="js-item"><span class="js-label">Posição atual</span><span class="js-city" id="journeyCurrentCity">Carregando…</span><span class="js-meta" id="journeyCurrentMeta">—</span></div>
+      <div class="js-item"><span class="js-label">Próximo destino</span><span class="js-city" id="journeyNextCity">Carregando…</span><span class="js-meta" id="journeyNextMeta">—</span></div>
+    </div>
+    <div class="js-stats"><span id="journeyKm">— km</span><span id="journeyTime">—</span><span id="journeyContinents">—/5 continentes</span></div>
+  </aside>
 
   <button id="playbackReturnBtn" type="button" aria-label="Voltar para a tela principal">↩ Voltar</button>
   <button id="playbackStopBtn" type="button" aria-label="Parar reprodução">■ Parar reprodução</button>
@@ -1249,6 +1269,7 @@ async function loadAirportsDatabase(){
 
   // ---------- State ----------
   var route = [];              // array of {icao,name,muni,country,lat,lon}
+  var journeyData = null;
 
 
   // ---------- Landing extras configuration ----------
@@ -1387,6 +1408,55 @@ async function loadAirportsDatabase(){
       return false;
     }
     return true;
+  }
+
+  function journeyAirport(icao){
+    var code=String(icao||'').trim().toUpperCase();
+    if(!code) return null;
+    for(var i=0;i<AIRPORTS.length;i++){
+      if(String(AIRPORTS[i][0]||'').toUpperCase()===code) return AIRPORTS[i];
+    }
+    return null;
+  }
+  function journeyCountryName(iso){
+    try{ return new Intl.DisplayNames(['pt-BR'],{type:'region'}).of(String(iso||'').toUpperCase()) || String(iso||''); }catch(e){ return String(iso||''); }
+  }
+  function renderJourneyStatus(){
+    if(!journeyData) return;
+    var p=journeyData.progress||{}, st=journeyData.stats||{}, c=journeyData.continents||{};
+    var cur=journeyData.current, next=journeyData.next;
+    var cp=journeyAirport(cur&&cur.icao), np=journeyAirport(next&&next.icao);
+    var curCity=(cp&&cp[2]) || (cur&&cur.city) || 'Ainda não iniciado';
+    var curCountry=(cp&&journeyCountryName(cp[3])) || (cur&&cur.country) || '';
+    var curAirport=(cp&&cp[1]) || (cur&&cur.airportName) || '';
+    var nextCity=(np&&np[2]) || (next&&next.city) || 'Viagem concluída';
+    var nextCountry=(np&&journeyCountryName(np[3])) || (next&&next.country) || '';
+    var nextAirport=(np&&np[1]) || (next&&next.airportName) || '';
+    var ce=document.getElementById('journeyCurrentCity'), cm=document.getElementById('journeyCurrentMeta');
+    var ne=document.getElementById('journeyNextCity'), nm=document.getElementById('journeyNextMeta');
+    if(ce) ce.textContent=curCity;
+    if(cm) cm.textContent=[curCountry,cur&&cur.icao,curAirport].filter(Boolean).join(' · ') || '—';
+    if(ne) ne.textContent=nextCity;
+    if(nm) nm.textContent=[nextCountry,next&&next.icao,nextAirport].filter(Boolean).join(' · ') || '—';
+    var pe=document.getElementById('journeyProgress'); if(pe) pe.textContent=(p.completedFlights||0)+' / '+(p.totalFlights||0)+' · '+(p.percent||0)+'%';
+    var ke=document.getElementById('journeyKm'); if(ke) ke.textContent=Number(st.kilometers||0).toLocaleString('pt-BR')+' km';
+    var te=document.getElementById('journeyTime'); if(te) te.textContent=st.flightTime||'0h00';
+    var ce2=document.getElementById('journeyContinents'); if(ce2) ce2.textContent=Math.min(Number(c.completed||0),5)+'/5 continentes';
+  }
+  async function loadJourneyData(){
+    try{
+      var response=await fetch('journey.json?ts='+Date.now(),{cache:'no-store'});
+      if(!response.ok) throw new Error('HTTP '+response.status);
+      var data=await response.json();
+      if(!data || typeof data!=='object') throw new Error('journey.json inválido.');
+      journeyData=data;
+      renderJourneyStatus();
+    }catch(err){
+      console.warn('Journey status load failed:',err);
+      var pe=document.getElementById('journeyProgress'); if(pe) pe.textContent='aguardando journey.json';
+      var ce=document.getElementById('journeyCurrentCity'); if(ce) ce.textContent='Aguardando atualização';
+      var ne=document.getElementById('journeyNextCity'); if(ne) ne.textContent='Aguardando atualização';
+    }
   }
 
   function setPreviewLoading(show, text){
@@ -1677,7 +1747,43 @@ async function loadAirportsDatabase(){
       syncGlobeLabels(route);
       requestGlobeRender();
     }
-  async function setBaseMap(styleKey){if(styleKey==='globe'){document.getElementById('app').classList.add('globe-mode');var ok=await initGlobe();if(ok){updateGlobeStatic();resizeGlobe();}settings.mapStyle='globe';return;}document.getElementById('app').classList.remove('globe-mode');if(!MAP_STYLES[styleKey])styleKey='voyager';if(baseMapLayer)map.removeLayer(baseMapLayer);var cfg=MAP_STYLES[styleKey];baseMapLayer=L.tileLayer(cfg.url,cfg.options).addTo(map);baseMapLayer.bringToBack();settings.mapStyle=styleKey;}
+  async function setBaseMap(styleKey){
+    if(isBusy) return false;
+
+    if(styleKey === 'globe'){
+      document.getElementById('app').classList.add('globe-mode');
+      var ok = await initGlobe();
+      if(!ok){
+        document.getElementById('app').classList.remove('globe-mode');
+        return false;
+      }
+      settings.mapStyle = 'globe';
+      updateGlobeStatic();
+      resizeGlobe();
+      requestGlobeRender();
+      return true;
+    }
+
+    document.getElementById('app').classList.remove('globe-mode');
+
+    if(!MAP_STYLES[styleKey]) styleKey = 'voyager';
+
+    if(baseMapLayer){
+      try{ map.removeLayer(baseMapLayer); }catch(e){}
+      baseMapLayer = null;
+    }
+
+    var cfg = MAP_STYLES[styleKey];
+    baseMapLayer = L.tileLayer(cfg.url, cfg.options).addTo(map);
+    baseMapLayer.bringToBack();
+    settings.mapStyle = styleKey;
+
+    setTimeout(function(){
+      try{ map.invalidateSize(false); }catch(e){}
+    }, 50);
+
+    return true;
+  }
 
   function initMap(){
     map = L.map('map', { zoomControl:false, worldCopyJump:true, minZoom:2, maxZoom:11, scrollWheelZoom:true }).setView([10,0], 2);
@@ -1933,7 +2039,7 @@ async function loadAirportsDatabase(){
     if(!globePlaneEntity){
       globePlaneEntity=cesiumViewer.entities.add({
         position:Cesium.Cartesian3.fromDegrees(prev.lon,prev.lat),
-        billboard:{ image:PLANE_ICON_SRC, scale:0.08, rotation:0,
+        billboard:{ image:PLANE_ICON_SRC, scale:0.11, rotation:0,
           color:Cesium.Color.WHITE,
           scaleByDistance:new Cesium.NearFarScalar(30000,0.8,18000000,0.55) }
       });
@@ -3347,6 +3453,7 @@ async function loadAirportsDatabase(){
     await setBaseMap('voyager');
     var ok = await loadPreviewRoute();
     if(!ok) return;
+    await loadJourneyData();
     // No preview, a rota planejada não é exibida antes da reprodução.
     // O mapa fica limpo e a animação já começa automaticamente.
     markerLayer.clearLayers();
