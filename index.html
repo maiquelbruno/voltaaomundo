@@ -277,6 +277,35 @@
   }
 
 
+  /* ===== Main-page journey tracking ===== */
+  .intro-journey-status{
+    display:block;width:min(760px,100%);box-sizing:border-box;margin-top:14px;padding:12px 14px;
+    border:1px solid rgba(244,197,27,.38);border-radius:14px;
+    background:linear-gradient(135deg,rgba(4,18,30,.86),rgba(8,28,42,.70));
+    box-shadow:0 10px 28px rgba(0,0,0,.28),0 0 24px rgba(244,197,27,.07);
+    backdrop-filter:blur(14px);color:#fff;
+  }
+  .intro-journey-head{display:flex;align-items:center;justify-content:space-between;gap:14px;padding-bottom:8px;border-bottom:1px solid rgba(255,255,255,.13)}
+  .intro-journey-kicker{display:block;font-size:7px;font-weight:850;letter-spacing:.18em;text-transform:uppercase;color:#f4c51b;margin-bottom:2px}
+  .intro-journey-title{display:block;font-size:12px;font-weight:850;letter-spacing:-.01em}
+  .intro-journey-progress{font:800 10px 'JetBrains Mono',monospace;color:#f4c51b;white-space:nowrap}
+  .intro-journey-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+  .intro-journey-item{min-width:0;padding:8px 10px;border:1px solid rgba(255,255,255,.12);border-radius:9px;background:rgba(0,0,0,.13)}
+  .intro-journey-item.current{border-color:rgba(92,201,233,.32)}
+  .intro-journey-item.next{border-color:rgba(244,197,27,.32)}
+  .intro-journey-label{display:block;font-size:7px;font-weight:850;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.52);margin-bottom:3px}
+  .intro-journey-city{display:block;font-size:12px;font-weight:900;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .intro-journey-meta{display:block;margin-top:3px;font:600 8px 'JetBrains Mono',monospace;color:rgba(255,255,255,.68);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .intro-journey-stats{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;margin-top:9px;padding-top:8px;border-top:1px solid rgba(255,255,255,.10)}
+  .intro-journey-stats>div{min-width:0}
+  .intro-journey-stats strong{display:block;font:850 11px 'JetBrains Mono',monospace;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .intro-journey-stats span{display:block;margin-top:2px;font-size:6px;line-height:1.25;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.45)}
+  @media(max-width:800px){
+    .intro-journey-status{width:100%;padding:10px 11px;margin-top:12px}
+    .intro-journey-grid{grid-template-columns:1fr}
+    .intro-journey-stats{grid-template-columns:repeat(3,minmax(0,1fr));row-gap:8px}
+  }
+
   /* Preview has no editor: the public page is read-only. */
   #topbar,#searchPanel,#logPanel,#gearBtn,#settingsPanel,#playBtn,#playbackReturnBtn,#playbackStopBtn{display:none!important;}
   #app{cursor:default;}
@@ -943,6 +972,35 @@
             <div id="introCountryFlags" class="intro-country-flags"></div>
           </div>
 
+          <section id="journeyStatus" class="intro-journey-status" aria-label="Acompanhamento da viagem">
+            <div class="intro-journey-head">
+              <div>
+                <span class="intro-journey-kicker" data-pt="Acompanhamento da viagem" data-en="Journey tracking">Acompanhamento da viagem</span>
+                <strong class="intro-journey-title" data-pt="Sua posição no mundo" data-en="Your position in the world">Sua posição no mundo</strong>
+              </div>
+              <span class="intro-journey-progress" id="journeyProgress">—</span>
+            </div>
+            <div class="intro-journey-grid">
+              <div class="intro-journey-item current">
+                <span class="intro-journey-label" data-pt="Posição atual" data-en="Current position">Posição atual</span>
+                <strong class="intro-journey-city" id="journeyCurrentCity">Carregando…</strong>
+                <span class="intro-journey-meta" id="journeyCurrentMeta">—</span>
+              </div>
+              <div class="intro-journey-item next">
+                <span class="intro-journey-label" data-pt="Próximo destino" data-en="Next destination">Próximo destino</span>
+                <strong class="intro-journey-city" id="journeyNextCity">Carregando…</strong>
+                <span class="intro-journey-meta" id="journeyNextMeta">—</span>
+              </div>
+            </div>
+            <div class="intro-journey-stats">
+              <div><strong id="journeyNextKm">—</strong><span data-pt="próximo trecho · km" data-en="next leg · km">próximo trecho · km</span></div>
+              <div><strong id="journeyNextTime">—</strong><span data-pt="próximo trecho · duração" data-en="next leg · duration">próximo trecho · duração</span></div>
+              <div><strong id="journeyKm">—</strong><span data-pt="já voados · km" data-en="flown · km">já voados · km</span></div>
+              <div><strong id="journeyTime">—</strong><span data-pt="já voadas · horas" data-en="flown · hours">já voadas · horas</span></div>
+              <div><strong id="journeyContinents">—/5</strong><span data-pt="continentes" data-en="continents">continentes</span></div>
+            </div>
+          </section>
+
         </div>
 
         <aside class="intro-card">
@@ -1102,14 +1160,6 @@
     <span id="previewSpeedValue">1,00×</span>
     <span id="previewStatus">PREVIEW</span>
   </div>
-  <aside id="journeyStatus" aria-label="Acompanhamento da viagem">
-    <div class="js-head"><span class="js-title">Acompanhamento da viagem</span><span class="js-progress" id="journeyProgress">—</span></div>
-    <div class="js-grid">
-      <div class="js-item"><span class="js-label">Posição atual</span><span class="js-city" id="journeyCurrentCity">Carregando…</span><span class="js-meta" id="journeyCurrentMeta">—</span></div>
-      <div class="js-item"><span class="js-label">Próximo destino</span><span class="js-city" id="journeyNextCity">Carregando…</span><span class="js-meta" id="journeyNextMeta">—</span></div>
-    </div>
-    <div class="js-stats"><span id="journeyKm">— km</span><span id="journeyTime">—</span><span id="journeyContinents">—/5 continentes</span></div>
-  </aside>
 
   <button id="playbackReturnBtn" type="button" aria-label="Voltar para a tela principal">↩ Voltar</button>
   <button id="playbackStopBtn" type="button" aria-label="Parar reprodução">■ Parar reprodução</button>
@@ -1441,7 +1491,14 @@ async function loadAirportsDatabase(){
     var pe=document.getElementById('journeyProgress'); if(pe) pe.textContent=(p.completedFlights||0)+' / '+(p.totalFlights||0)+' · '+(p.percent||0)+'%';
     var ke=document.getElementById('journeyKm'); if(ke) ke.textContent=Number(st.kilometers||0).toLocaleString('pt-BR')+' km';
     var te=document.getElementById('journeyTime'); if(te) te.textContent=st.flightTime||'0h00';
-    var ce2=document.getElementById('journeyContinents'); if(ce2) ce2.textContent=Math.min(Number(c.completed||0),5)+'/5 continentes';
+    var ce2=document.getElementById('journeyContinents'); if(ce2) ce2.textContent=Math.min(Number(c.completed||0),5)+'/5';
+    var nextLeg=null;
+    if(next && Array.isArray(journeyData.legs)){
+      nextLeg=journeyData.legs.find(function(leg){ return String(leg.id)===String(next.legId); }) || null;
+    }
+    var nk=document.getElementById('journeyNextKm'), nt=document.getElementById('journeyNextTime');
+    if(nk) nk.textContent=nextLeg && Number.isFinite(Number(nextLeg.km)) ? Number(nextLeg.km).toLocaleString('pt-BR')+' km' : '—';
+    if(nt) nt.textContent=nextLeg && nextLeg.duration ? nextLeg.duration : '—';
   }
   async function loadJourneyData(){
     try{
@@ -1453,9 +1510,11 @@ async function loadAirportsDatabase(){
       renderJourneyStatus();
     }catch(err){
       console.warn('Journey status load failed:',err);
-      var pe=document.getElementById('journeyProgress'); if(pe) pe.textContent='aguardando journey.json';
+      var pe=document.getElementById('journeyProgress'); if(pe) pe.textContent='aguardando atualização';
       var ce=document.getElementById('journeyCurrentCity'); if(ce) ce.textContent='Aguardando atualização';
       var ne=document.getElementById('journeyNextCity'); if(ne) ne.textContent='Aguardando atualização';
+      var nk=document.getElementById('journeyNextKm'), nt=document.getElementById('journeyNextTime');
+      if(nk) nk.textContent='—'; if(nt) nt.textContent='—';
     }
   }
 
