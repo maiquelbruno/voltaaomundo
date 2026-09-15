@@ -1011,6 +1011,38 @@
       row-gap:5px !important;
     }
   }
+
+  /* ===== FINAL PATCH: button labels fit without changing button dimensions ===== */
+  .intro-actions .landing-action .action-label{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex:1 1 auto;
+    min-width:0;
+    width:auto;
+    text-align:center;
+    line-height:1.02;
+    white-space:normal;
+    overflow:visible;
+  }
+  .intro-actions .landing-action .action-label > span{
+    display:block;
+    max-width:100%;
+    white-space:normal;
+    overflow:visible;
+    text-overflow:clip;
+    overflow-wrap:normal;
+    word-break:normal;
+    text-align:center;
+    line-height:1.02;
+  }
+  .intro-actions .landing-action{
+    justify-content:center;
+  }
+  @media(max-width:640px){
+    .intro-actions .landing-action .action-label{white-space:normal;overflow:visible;justify-content:center;text-align:center}
+    .intro-actions .landing-action .action-label > span{white-space:normal;overflow:visible;text-overflow:clip;text-align:center}
+  }
 </style>
 </head>
 <body>
