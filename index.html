@@ -966,6 +966,49 @@
 }
 /* ===== fim do patch ===== */
 
+
+
+  /* ===== AJUSTE FINAL: ações da página principal em uma única linha ===== */
+  @media(min-width:901px){
+    .intro-actions{
+      display:flex !important;
+      flex-wrap:nowrap !important;
+      gap:10px !important;
+      width:100% !important;
+      align-items:center !important;
+    }
+    .intro-actions .landing-action{
+      min-width:0 !important;
+      height:50px !important;
+      flex:0 0 auto !important;
+      padding:7px 48px 7px 13px !important;
+      font-size:10px !important;
+      letter-spacing:.07em !important;
+      gap:8px !important;
+    }
+    .intro-actions #startJourneyBtn{width:145px !important}
+    .intro-actions #galleryBtn{width:125px !important}
+    .intro-actions #planningBtn{width:195px !important}
+    .intro-actions #supportBtn{width:145px !important}
+    .intro-actions .landing-action .action-icon{
+      right:7px !important;
+      width:32px !important;
+      height:32px !important;
+    }
+    .intro-actions .landing-action .action-plane img{width:22px !important;height:22px !important}
+    .intro-countries{
+      margin-top:18px !important;
+      max-width:100% !important;
+      padding-right:8px !important;
+      box-sizing:border-box !important;
+      align-items:flex-start !important;
+    }
+    .intro-country-flags{
+      flex:1 1 auto !important;
+      min-width:0 !important;
+      row-gap:5px !important;
+    }
+  }
 </style>
 </head>
 <body>
