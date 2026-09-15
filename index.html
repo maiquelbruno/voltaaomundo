@@ -778,6 +778,26 @@
   .ui-icon-gallery i{display:block}
   .ui-icon-coffee:before{content:"";position:absolute;left:2px;top:5px;width:11px;height:8px;border:2px solid #b86b35;border-radius:2px 2px 4px 4px;background:linear-gradient(180deg,#f4c51b 0 28%,#b86b35 29% 100%)}
   .ui-icon-coffee:after{content:"";position:absolute;right:0;top:7px;width:5px;height:5px;border:2px solid #b86b35;border-left:0;border-radius:0 5px 5px 0}
+  .ui-icon-routeplan:before{content:"";position:absolute;left:2px;top:3px;width:13px;height:10px;border:2px solid #11a9d8;border-radius:3px;transform:skewY(-7deg);}
+  .ui-icon-routeplan:after{content:"";position:absolute;left:5px;top:8px;width:9px;height:2px;background:#f4c51b;box-shadow:-2px 4px 0 #f4c51b;transform:rotate(-28deg);transform-origin:left center;border-radius:2px;}
+  .planning-modal-card{width:min(1040px,100%);}
+  .planning-summary{display:flex;flex-wrap:wrap;gap:10px;margin:0 0 22px;}
+  .planning-summary span{display:inline-flex;align-items:center;gap:7px;padding:7px 10px;border:1px solid rgba(255,255,255,.12);border-radius:999px;background:rgba(255,255,255,.035);font:700 10px 'IBM Plex Mono',monospace;color:rgba(255,255,255,.68);letter-spacing:.05em;text-transform:uppercase;}
+  .planning-summary b{color:#f4c51b;font-weight:700;}
+  .planning-chapter{margin:0 0 24px;border:1px solid rgba(255,255,255,.11);border-radius:14px;background:rgba(0,0,0,.12);overflow:hidden;}
+  .planning-chapter-head{display:flex;align-items:baseline;gap:12px;padding:13px 16px 11px;border-bottom:1px solid rgba(255,255,255,.10);}
+  .planning-chapter-num{font:700 10px 'IBM Plex Mono',monospace;color:#f4c51b;border:1px solid rgba(244,197,27,.5);border-radius:50%;width:24px;height:24px;display:grid;place-items:center;flex:0 0 auto;}
+  .planning-chapter-title{font:800 17px 'Spectral',serif;color:#fff;}
+  .planning-chapter-sub{font:italic 11px Inter,sans-serif;color:rgba(255,255,255,.42);margin-left:auto;}
+  .planning-legs{padding:3px 16px 9px;}
+  .planning-leg{display:grid;grid-template-columns:36px minmax(0,1fr) 24px minmax(0,1fr);gap:9px;align-items:center;padding:11px 0;border-bottom:1px solid rgba(255,255,255,.07);}
+  .planning-leg:last-child{border-bottom:0;}
+  .planning-leg-no{font:700 9px 'IBM Plex Mono',monospace;color:rgba(255,255,255,.34);}
+  .planning-place strong{display:block;color:rgba(255,255,255,.90);font:700 13px Inter,sans-serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .planning-place small{display:block;margin-top:3px;color:#f4c51b;font:600 9px 'IBM Plex Mono',monospace;letter-spacing:.05em;}
+  .planning-arrow{color:#f4c51b;text-align:center;font-size:15px;}
+  .planning-empty{padding:30px;text-align:center;color:rgba(255,255,255,.52);font:12px Inter,sans-serif;}
+  @media(max-width:700px){.planning-chapter-sub{display:none}.planning-leg{grid-template-columns:26px minmax(0,1fr) 18px minmax(0,1fr);gap:6px}.planning-place strong{font-size:11px}.planning-place small{font-size:8px}.planning-summary span{font-size:9px}}
   .pix-box{display:grid;place-items:center;min-height:286px;border:1px dashed rgba(255,255,255,.18);border-radius:14px;background:rgba(0,0,0,.16);padding:18px;box-sizing:border-box}
   #pixQr{width:244px;height:244px;padding:10px;background:#fff;border-radius:14px;display:grid;place-items:center;overflow:hidden;box-sizing:border-box;margin:0 auto}
   #pixQr img,#pixQr canvas{width:220px!important;height:220px!important;display:block!important;margin:0!important}
@@ -987,6 +1007,10 @@
               <span class="action-label"><span data-pt="Galeria" data-en="Gallery">Galeria</span></span>
               <span class="action-icon" aria-hidden="true"><span class="ui-icon ui-icon-gallery"></span></span>
             </button>
+            <button id="planningBtn" class="landing-action" type="button">
+              <span class="action-label"><span data-pt="Planejamento da rota" data-en="Route plan">Planejamento da rota</span></span>
+              <span class="action-icon" aria-hidden="true"><span class="ui-icon ui-icon-routeplan"></span></span>
+            </button>
             <button id="supportBtn" class="landing-action" type="button">
               <span class="action-label"><span data-pt="Pague um café" data-en="Buy me a coffee">Pague um café</span></span>
               <span class="action-icon" aria-hidden="true"><span class="ui-icon ui-icon-coffee"></span></span>
@@ -1067,6 +1091,20 @@
     </div>
   </section>
 
+
+
+  <div id="planningModal" class="landing-modal" aria-hidden="true">
+    <div class="landing-modal-card planning-modal-card" role="dialog" aria-modal="true" aria-labelledby="planningModalTitle">
+      <button class="landing-modal-close" type="button" data-close-modal="planningModal" aria-label="Fechar" data-aria-pt="Fechar" data-aria-en="Close">×</button>
+      <div class="landing-modal-head">
+        <div class="landing-modal-kicker" data-pt="VOLTA AO MUNDO · ROTA PREVISTA" data-en="ROUND THE WORLD · PLANNED ROUTE">VOLTA AO MUNDO · ROTA PREVISTA</div>
+        <div id="planningModalTitle" class="landing-modal-title" data-pt="Planejamento da rota" data-en="Route plan">Planejamento da rota</div>
+        <div class="landing-modal-sub" data-pt="Planejamento previsto da jornada. A execução pode ser adaptada conforme a autonomia da aeronave e as condições operacionais." data-en="Planned route for the journey. The execution may be adapted to the aircraft's range and operational conditions.">Planejamento previsto da jornada. A execução pode ser adaptada conforme a autonomia da aeronave e as condições operacionais.</div>
+      </div>
+      <div id="planningSummary" class="planning-summary"></div>
+      <div id="planningList"><div class="planning-empty" data-pt="Carregando planejamento…" data-en="Loading route plan…">Carregando planejamento…</div></div>
+    </div>
+  </div>
 
   <div id="galleryModal" class="landing-modal" aria-hidden="true">
     <div class="landing-modal-card" role="dialog" aria-modal="true" aria-labelledby="galleryModalTitle">
@@ -3613,6 +3651,27 @@ async function loadAirportsDatabase(){
   init();
 })();
 
+</script>
+
+<script>
+(function(){
+  var planningData=null;
+  function esc(v){return String(v==null?'':v).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+  function openPlanningModal(){var m=document.getElementById('planningModal');if(!m)return;m.classList.add('open');m.setAttribute('aria-hidden','false');loadPlanning();}
+  function renderPlanning(data){
+    var summary=document.getElementById('planningSummary'),list=document.getElementById('planningList');if(!summary||!list)return;
+    var total=Number(data.totalFlights)||0;var chapters=Array.isArray(data.chapters)?data.chapters:[];var countries=new Set();chapters.forEach(function(ch){(ch.legs||[]).forEach(function(l){var c=String(l.toIcao||'').slice(0,2);if(c)countries.add(c);});});
+    summary.innerHTML='<span><b>'+total+'</b> etapas previstas</span><span><b>5</b> continentes</span><span><b>'+chapters.length+'</b> capítulos</span>';
+    if(!chapters.length){list.innerHTML='<div class="planning-empty">Planejamento indisponível.</div>';return;}
+    list.innerHTML=chapters.map(function(ch,i){var legs=Array.isArray(ch.legs)?ch.legs:[];return '<section class="planning-chapter"><div class="planning-chapter-head"><div class="planning-chapter-num">'+String(i+1).padStart(2,'0')+'</div><div class="planning-chapter-title">'+esc(ch.title||'Rota')+'</div><div class="planning-chapter-sub">'+esc(ch.subtitle||'')+'</div></div><div class="planning-legs">'+legs.map(function(l,j){return '<div class="planning-leg"><div class="planning-leg-no">'+String(j+1).padStart(2,'0')+'</div><div class="planning-place"><strong>'+esc(l.from||'—')+'</strong><small>'+esc(l.fromIcao||'—')+'</small></div><div class="planning-arrow">→</div><div class="planning-place"><strong>'+esc(l.to||'—')+'</strong><small>'+esc(l.toIcao||'—')+'</small></div></div>';}).join('')+'</div></section>';}).join('');
+  }
+  async function loadPlanning(){
+    var list=document.getElementById('planningList');if(!list)return;
+    try{var r=await fetch('planning.json?ts='+Date.now(),{cache:'no-store'});if(!r.ok)throw new Error('HTTP '+r.status);planningData=await r.json();renderPlanning(planningData);}catch(e){console.warn('Planning load failed:',e);list.innerHTML='<div class="planning-empty">O planejamento ainda não foi publicado. Atualize o arquivo <b>planning.json</b> no GitHub Pages.</div>';}
+  }
+  function initPlanningButton(){var b=document.getElementById('planningBtn');if(b&&!b._bound){b._bound=true;b.addEventListener('click',openPlanningModal);}}
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',initPlanningButton);else initPlanningButton();
+})();
 </script>
 </body>
 </html>
