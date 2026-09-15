@@ -475,23 +475,44 @@
   .intro-signature{font-size:22px;font-family:cursive;font-style:italic;color:#fff;margin-top:4px}
 
   .intro-stats{
-    position:absolute;left:clamp(22px,4vw,62px);bottom:44px;z-index:3;display:grid;grid-template-columns:1.15fr 1fr 1fr;
-    width:min(700px,calc(100% - 44px));border:1px solid rgba(255,255,255,.22);border-radius:17px;
-    background:rgba(3,14,23,.55);backdrop-filter:blur(14px);overflow:hidden;box-shadow:0 12px 35px rgba(0,0,0,.24)
+    position:absolute;left:clamp(22px,4vw,62px);bottom:42px;z-index:3;display:block;width:min(760px,calc(100% - 44px));box-sizing:border-box;
+    padding:14px 16px 12px;border:1px solid rgba(255,255,255,.22);border-radius:17px;
+    background:linear-gradient(135deg,rgba(3,14,23,.82),rgba(5,22,34,.66));backdrop-filter:blur(16px);overflow:hidden;
+    box-shadow:0 12px 35px rgba(0,0,0,.28),0 0 26px rgba(92,201,233,.05);
   }
-  .intro-stat{padding:13px 16px;min-width:0}
-  .intro-stat+.intro-stat{border-left:1px solid rgba(255,255,255,.14)}
-  .intro-stat strong{display:block;font-size:clamp(20px,2vw,28px);font-weight:850;letter-spacing:-.035em}
-  .intro-stat span{display:block;margin-top:4px;font-size:8px;line-height:1.4;letter-spacing:.10em;text-transform:uppercase;color:rgba(255,255,255,.55)}
-  .intro-progress-value{display:flex;align-items:baseline;gap:8px}.intro-percent{font-size:9px;color:#f4c51b;font-weight:800}
-  .intro-progress-track{height:4px;margin-top:9px;border-radius:99px;background:rgba(255,255,255,.13);overflow:hidden}
-  .intro-progress-track i{display:block;width:0;height:100%;border-radius:99px;background:#f4c51b;transition:width .8s ease}
-  .intro-status{display:flex;align-items:center;gap:7px;color:#f4c51b!important}.intro-status::before{content:"";width:6px;height:6px;border-radius:50%;background:#f4c51b;box-shadow:0 0 10px rgba(244,197,27,.7)}
+  .intro-stats-head{display:flex;align-items:center;justify-content:space-between;gap:18px;padding-bottom:8px;border-bottom:1px solid rgba(255,255,255,.12)}
+  .intro-stats-kicker{display:block;font-size:7px;font-weight:850;letter-spacing:.18em;text-transform:uppercase;color:#f4c51b;margin-bottom:2px}
+  .intro-stats-title{display:block;font-size:12px;font-weight:850;letter-spacing:-.01em;color:#fff}
+  .intro-stats-progress{display:flex;align-items:baseline;gap:7px;white-space:nowrap}
+  .intro-stats-progress strong{font:850 12px 'JetBrains Mono',monospace;color:#fff}
+  .intro-stats-progress span{font:800 9px 'JetBrains Mono',monospace;color:#f4c51b}
+  .intro-stats-locations{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:9px}
+  .intro-location{min-width:0;padding:8px 10px;border:1px solid rgba(255,255,255,.12);border-radius:10px;background:rgba(0,0,0,.14)}
+  .intro-location.current{border-color:rgba(92,201,233,.30)}
+  .intro-location.next{border-color:rgba(244,197,27,.30)}
+  .intro-location-label{display:flex;align-items:center;gap:5px;font-size:7px;font-weight:850;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.52);margin-bottom:3px}
+  .intro-location strong{display:block;font-size:12px;font-weight:900;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#fff}
+  .intro-location>span:last-child{display:block;margin-top:3px;font:600 8px 'JetBrains Mono',monospace;color:rgba(255,255,255,.66);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .intro-location-pin{position:relative;width:8px;height:10px;border-radius:7px 7px 7px 1px;background:#5cc9e9;transform:rotate(-45deg);display:inline-block;flex:0 0 auto;box-shadow:0 0 8px rgba(92,201,233,.34)}
+  .intro-location-pin::after{content:"";position:absolute;width:3px;height:3px;left:2.5px;top:2.5px;border-radius:50%;background:#102133}
+  .intro-location-plane{font-style:normal;font-size:10px;line-height:1;color:#f4c51b;display:inline-block;flex:0 0 auto;transform:rotate(90deg)}
+  .intro-stats-metrics{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;margin-top:9px;padding-top:8px;border-top:1px solid rgba(255,255,255,.10)}
+  .intro-stats-metrics>div{min-width:0}
+  .intro-stats-metrics strong{display:block;font:850 11px 'JetBrains Mono',monospace;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .intro-stats-metrics span{display:block;margin-top:2px;font-size:6px;line-height:1.25;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.45)}
+  .intro-stats>.intro-progress-track{height:3px;margin-top:10px;border-radius:99px;background:rgba(255,255,255,.13);overflow:hidden}
+  .intro-stats>.intro-progress-track i{display:block;width:0;height:100%;border-radius:99px;background:#f4c51b;transition:width .8s ease}
   .intro-footer{position:absolute;left:clamp(22px,4vw,62px);right:clamp(22px,4vw,62px);bottom:16px;display:flex;justify-content:space-between;
     gap:20px;align-items:center;font-size:8px;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.38)}
   #projectIntro.loading .intro-main,#projectIntro.loading .intro-stats{opacity:0}
   #projectIntro.ready .intro-main,#projectIntro.ready .intro-stats{animation:introRise .8s ease .08s both}
   @keyframes introRise{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+
+  @media(max-width:800px){
+    .intro-stats{width:calc(100% - 44px);bottom:38px;padding:11px 12px 10px}
+    .intro-stats-locations{grid-template-columns:1fr}
+    .intro-stats-metrics{grid-template-columns:repeat(3,minmax(0,1fr));row-gap:8px}
+  }
 
   /* Transition: clean route-loading progress */
   #flightTransition{position:fixed;inset:0;z-index:9500;display:flex;align-items:center;justify-content:center;overflow:hidden;
@@ -972,35 +993,6 @@
             <div id="introCountryFlags" class="intro-country-flags"></div>
           </div>
 
-          <section id="journeyStatus" class="intro-journey-status" aria-label="Acompanhamento da viagem">
-            <div class="intro-journey-head">
-              <div>
-                <span class="intro-journey-kicker" data-pt="Acompanhamento da viagem" data-en="Journey tracking">Acompanhamento da viagem</span>
-                <strong class="intro-journey-title" data-pt="Sua posição no mundo" data-en="Your position in the world">Sua posição no mundo</strong>
-              </div>
-              <span class="intro-journey-progress" id="journeyProgress">—</span>
-            </div>
-            <div class="intro-journey-grid">
-              <div class="intro-journey-item current">
-                <span class="intro-journey-label" data-pt="Posição atual" data-en="Current position">Posição atual</span>
-                <strong class="intro-journey-city" id="journeyCurrentCity">Carregando…</strong>
-                <span class="intro-journey-meta" id="journeyCurrentMeta">—</span>
-              </div>
-              <div class="intro-journey-item next">
-                <span class="intro-journey-label" data-pt="Próximo destino" data-en="Next destination">Próximo destino</span>
-                <strong class="intro-journey-city" id="journeyNextCity">Carregando…</strong>
-                <span class="intro-journey-meta" id="journeyNextMeta">—</span>
-              </div>
-            </div>
-            <div class="intro-journey-stats">
-              <div><strong id="journeyNextKm">—</strong><span data-pt="próximo trecho · km" data-en="next leg · km">próximo trecho · km</span></div>
-              <div><strong id="journeyNextTime">—</strong><span data-pt="próximo trecho · duração" data-en="next leg · duration">próximo trecho · duração</span></div>
-              <div><strong id="journeyKm">—</strong><span data-pt="já voados · km" data-en="flown · km">já voados · km</span></div>
-              <div><strong id="journeyTime">—</strong><span data-pt="já voadas · horas" data-en="flown · hours">já voadas · horas</span></div>
-              <div><strong id="journeyContinents">—/5</strong><span data-pt="continentes" data-en="continents">continentes</span></div>
-            </div>
-          </section>
-
         </div>
 
         <aside class="intro-card">
@@ -1039,15 +1031,35 @@
         </aside>
       </div>
 
-      <div class="intro-stats" aria-label="Progresso da jornada">
-        <div class="intro-stat intro-progress-stat">
-          <div class="intro-progress-value"><strong id="introProgress">—</strong><span class="intro-percent" id="introPercent">0%</span></div>
-          <span data-pt="progresso até o momento · pousos" data-en="progress so far · landings">progresso até o momento · pousos</span>
-          <div class="intro-progress-track"><i id="introProgressBar"></i></div>
+      <section class="intro-stats" aria-label="Acompanhamento da viagem">
+        <div class="intro-stats-head">
+          <div>
+            <span class="intro-stats-kicker" data-pt="Acompanhamento da viagem" data-en="Journey tracking">Acompanhamento da viagem</span>
+            <strong class="intro-stats-title" data-pt="Sua posição no mundo" data-en="Your position in the world">Sua posição no mundo</strong>
+          </div>
+          <div class="intro-stats-progress"><strong id="introProgress">—</strong><span id="introPercent">0%</span></div>
         </div>
-        <div class="intro-stat"><strong id="introDistance">—</strong><span data-pt="quilômetros na rota" data-en="kilometers on route">quilômetros na rota</span></div>
-        <div class="intro-stat"><strong class="intro-status" data-pt="Em andamento" data-en="In progress">Em andamento</strong><span data-pt="jornada virtual" data-en="virtual journey">jornada virtual</span></div>
-      </div>
+        <div class="intro-stats-locations">
+          <div class="intro-location current">
+            <span class="intro-location-label"><i class="intro-location-pin" aria-hidden="true"></i><span data-pt="Posição atual" data-en="Current position">Posição atual</span></span>
+            <strong id="journeyCurrentCity">Carregando…</strong>
+            <span id="journeyCurrentMeta">—</span>
+          </div>
+          <div class="intro-location next">
+            <span class="intro-location-label"><i class="intro-location-plane" aria-hidden="true">✈</i><span data-pt="Próximo destino" data-en="Next destination">Próximo destino</span></span>
+            <strong id="journeyNextCity">Carregando…</strong>
+            <span id="journeyNextMeta">—</span>
+          </div>
+        </div>
+        <div class="intro-stats-metrics">
+          <div><strong id="journeyNextKm">—</strong><span data-pt="próximo trecho · km" data-en="next leg · km">próximo trecho · km</span></div>
+          <div><strong id="journeyNextTime">—</strong><span data-pt="próximo trecho · duração" data-en="next leg · duration">próximo trecho · duração</span></div>
+          <div><strong id="journeyKm">—</strong><span data-pt="já voados · km" data-en="flown · km">já voados · km</span></div>
+          <div><strong id="journeyTime">—</strong><span data-pt="já voadas · horas" data-en="flown · hours">já voadas · horas</span></div>
+          <div><strong id="journeyContinents">—/5</strong><span data-pt="continentes" data-en="continents">continentes</span></div>
+        </div>
+        <div class="intro-progress-track"><i id="introProgressBar"></i></div>
+      </section>
       <div class="intro-footer"><span>RV-10 · WORLD FLIGHT</span><span data-pt="Quando estiver pronto, decole" data-en="When you're ready, take off">Quando estiver pronto, decole</span></div>
     </div>
   </section>
@@ -1489,6 +1501,10 @@ async function loadAirportsDatabase(){
     if(ne) ne.textContent=nextCity;
     if(nm) nm.textContent=[nextCountry,next&&next.icao,nextAirport].filter(Boolean).join(' · ') || '—';
     var pe=document.getElementById('journeyProgress'); if(pe) pe.textContent=(p.completedFlights||0)+' / '+(p.totalFlights||0)+' · '+(p.percent||0)+'%';
+    var ip=document.getElementById('introProgress'), ipct=document.getElementById('introPercent'), ipb=document.getElementById('introProgressBar');
+    if(ip) ip.textContent=(p.completedFlights||0)+' / '+(p.totalFlights||0);
+    if(ipct) ipct.textContent=(p.percent||0)+'%';
+    if(ipb) ipb.style.width=Math.min(100,Math.max(0,Number(p.percent||0)))+'%';
     var ke=document.getElementById('journeyKm'); if(ke) ke.textContent=Number(st.kilometers||0).toLocaleString('pt-BR')+' km';
     var te=document.getElementById('journeyTime'); if(te) te.textContent=st.flightTime||'0h00';
     var ce2=document.getElementById('journeyContinents'); if(ce2) ce2.textContent=Math.min(Number(c.completed||0),5)+'/5';
@@ -1511,6 +1527,7 @@ async function loadAirportsDatabase(){
     }catch(err){
       console.warn('Journey status load failed:',err);
       var pe=document.getElementById('journeyProgress'); if(pe) pe.textContent='aguardando atualização';
+      var ip=document.getElementById('introProgress'), ipct=document.getElementById('introPercent'); if(ip) ip.textContent='—'; if(ipct) ipct.textContent='—';
       var ce=document.getElementById('journeyCurrentCity'); if(ce) ce.textContent='Aguardando atualização';
       var ne=document.getElementById('journeyNextCity'); if(ne) ne.textContent='Aguardando atualização';
       var nk=document.getElementById('journeyNextKm'), nt=document.getElementById('journeyNextTime');
