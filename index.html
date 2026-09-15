@@ -845,11 +845,13 @@
     position:relative; justify-content:flex-start; padding:8px 58px 8px 22px; text-align:left;
   }
   .intro-actions .landing-action .action-label{
-    display:flex; align-items:center; justify-content:flex-start; width:auto; min-width:0;
-    flex:1 1 auto; text-align:left; line-height:1.05; white-space:nowrap; overflow:hidden;
+    display:flex; align-items:center; justify-content:center; width:auto; min-width:0;
+    flex:1 1 auto; text-align:center; line-height:1.02; white-space:normal; overflow:visible;
+    text-overflow:clip;
   }
   .intro-actions .landing-action .action-label > span{
-    display:block; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
+    display:block; max-width:100%; white-space:normal; overflow-wrap:normal; word-break:normal;
+    text-align:center; line-height:1.02;
   }
   .intro-actions .landing-action .action-icon{
     position:absolute; right:10px; top:50%; transform:translateY(-50%); width:34px; height:34px;
