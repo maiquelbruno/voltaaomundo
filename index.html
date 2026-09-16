@@ -795,15 +795,15 @@
   .planning-leg:last-child{border-bottom:0;}
   .planning-leg-no{position:absolute;left:4px;top:25px;font:700 10px 'IBM Plex Mono',monospace;color:rgba(255,255,255,.34);z-index:1;}
   .planning-place{min-width:0;}
-  .planning-place:first-of-type{padding-left:40px;}
+  .planning-place:first-of-type{padding-left:0;}
   .planning-place:last-of-type{padding-left:0;}
   .planning-place strong{display:flex;align-items:center;gap:10px;color:#fff;font:800 23px 'Spectral',serif;line-height:1.08;white-space:normal;overflow:visible;}
   .planning-place small{display:flex;align-items:center;gap:8px;margin-top:7px;color:rgba(255,255,255,.54);font:600 10px 'IBM Plex Mono',monospace;letter-spacing:.03em;text-transform:none;}
   .planning-place .planning-flag{width:22px;height:15px;display:inline-block;flex:0 0 auto;border-radius:2px;box-shadow:0 1px 3px rgba(0,0,0,.35);}
-  .planning-arrow{height:44px;width:110px;display:flex;align-items:center;justify-content:center;text-align:center;}
-  .planning-arrow img{width:38px;height:38px;object-fit:contain;display:block;transform:rotate(90deg);filter:drop-shadow(0 3px 5px rgba(0,0,0,.38));}
+  .planning-plane{height:44px;width:72px;display:flex;align-items:center;justify-content:center;text-align:center;flex:0 0 72px;}
+  .planning-plane img{width:42px;height:42px;object-fit:contain;display:block;transform:none;filter:drop-shadow(0 3px 5px rgba(0,0,0,.38));}
   .planning-empty{padding:40px;text-align:center;color:rgba(255,255,255,.52);font:12px Inter,sans-serif;}
-  @media(max-width:700px){.planning-modal-card{padding:22px}.planning-chapter-head{padding:16px 16px 14px}.planning-chapter-title{font-size:21px}.planning-chapter-sub{display:block;font-size:10px}.planning-legs{padding:5px 16px 12px}.planning-leg{grid-template-columns:minmax(0,1fr) 72px minmax(0,1fr);gap:10px;padding:16px 0}.planning-leg-no{left:0;top:21px}.planning-place:first-of-type{padding-left:24px}.planning-arrow{width:72px;height:38px}.planning-arrow img{width:30px;height:30px}.planning-place strong{font-size:20px}.planning-place small{font-size:9px}.planning-summary span{font-size:9px}}
+  @media(max-width:700px){.planning-modal-card{padding:22px}.planning-chapter-head{padding:16px 16px 14px}.planning-chapter-title{font-size:21px}.planning-chapter-sub{display:block;font-size:10px}.planning-legs{padding:5px 16px 12px}.planning-leg{grid-template-columns:minmax(0,1fr) 72px minmax(0,1fr);gap:10px;padding:16px 0}.planning-leg-no{left:0;top:21px}.planning-place:first-of-type{padding-left:24px}.planning-plane{width:72px;height:38px}.planning-plane img{width:30px;height:30px}.planning-place strong{font-size:20px}.planning-place small{font-size:9px}.planning-summary span{font-size:9px}}
   .pix-box{display:grid;place-items:center;min-height:286px;border:1px dashed rgba(255,255,255,.18);border-radius:14px;background:rgba(0,0,0,.16);padding:18px;box-sizing:border-box}
   #pixQr{width:244px;height:244px;padding:10px;background:#fff;border-radius:14px;display:grid;place-items:center;overflow:hidden;box-sizing:border-box;margin:0 auto}
   #pixQr img,#pixQr canvas{width:220px!important;height:220px!important;display:block!important;margin:0!important}
@@ -3782,12 +3782,29 @@ async function loadAirportsDatabase(){
     var lang=document.documentElement.lang==='en'?'en':'pt';
     list.innerHTML=chapters.map(function(ch,i){
       var legs=Array.isArray(ch.legs)?ch.legs:[];
-      return '<section class="planning-chapter"><div class="planning-chapter-head"><div class="planning-chapter-num">'+String(i+1).padStart(2,'0')+'</div><div class="planning-chapter-copy"><div class="planning-chapter-title">'+esc(ch.title||'Rota')+'</div><div class="planning-chapter-sub">'+esc(ch.subtitle||'')+'</div></div></div><div class="planning-legs">'+legs.map(function(l,j){return '<div class="planning-leg"><div class="planning-leg-no">'+String(j+1).padStart(2,'0')+'</div>'+renderPlace(l.from,l.fromIcao,lang)+'<div class="planning-arrow" aria-hidden="true"><img src="'+PLANE_ICON_SRC+'" alt=""></div>'+renderPlace(l.to,l.toIcao,lang)+'</div>';}).join('')+'</div></section>';
+      return '<section class="planning-chapter"><div class="planning-chapter-head"><div class="planning-chapter-num">'+String(i+1).padStart(2,'0')+'</div><div class="planning-chapter-copy"><div class="planning-chapter-title">'+esc(ch.title||'Rota')+'</div><div class="planning-chapter-sub">'+esc(ch.subtitle||'')+'</div></div></div><div class="planning-legs">'+legs.map(function(l,j){return '<div class="planning-leg"><div class="planning-leg-no">'+String(j+1).padStart(2,'0')+'</div>'+renderPlace(l.from,l.fromIcao,lang)+'<div class="planning-plane" aria-hidden="true"><img src="'+PLANE_ICON_SRC+'" alt=""></div>'+renderPlace(l.to,l.toIcao,lang)+'</div>';}).join('')+'</div></section>';
     }).join('');
   }
   async function loadPlanning(){
     var list=document.getElementById('planningList');if(!list)return;
-    try{var r=await fetch('planning.json?ts='+Date.now(),{cache:'no-store'});if(!r.ok)throw new Error('HTTP '+r.status);planningData=await r.json();renderPlanning(planningData);}catch(e){console.warn('Planning load failed; using embedded planning:',e);planningData=EMBEDDED_PLANNING;renderPlanning(planningData);}
+    // Mostra imediatamente a versão incorporada. Assim a tela nunca fica presa em "Carregando planejamento…".
+    planningData=EMBEDDED_PLANNING;
+    try{renderPlanning(planningData);}catch(e){console.error('Falha ao renderizar o planejamento incorporado:',e);return;}
+    // Depois tenta atualizar com planning.json, se ele estiver publicado.
+    try{
+      var controller=typeof AbortController!=='undefined'?new AbortController():null;
+      var timer=controller?setTimeout(function(){controller.abort();},7000):null;
+      var opts={cache:'no-store'};if(controller)opts.signal=controller.signal;
+      var r=await fetch('planning.json?ts='+Date.now(),opts);
+      if(timer)clearTimeout(timer);
+      if(!r.ok)throw new Error('HTTP '+r.status);
+      var data=await r.json();
+      if(!data || !Array.isArray(data.chapters))throw new Error('planning.json inválido.');
+      planningData=data;
+      renderPlanning(planningData);
+    }catch(e){
+      console.warn('Planning JSON não disponível; mantendo planejamento incorporado:',e);
+    }
   }
   function initPlanningButton(){var b=document.getElementById('planningBtn');if(b&&!b._bound){b._bound=true;b.addEventListener('click',openPlanningModal);}}
   var langObserver=new MutationObserver(function(){if(planningData&&document.getElementById('planningModal')?.classList.contains('open'))renderPlanning(planningData);});
