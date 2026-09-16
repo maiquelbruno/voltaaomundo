@@ -780,24 +780,30 @@
   .ui-icon-coffee:after{content:"";position:absolute;right:0;top:7px;width:5px;height:5px;border:2px solid #b86b35;border-left:0;border-radius:0 5px 5px 0}
   .ui-icon-routeplan:before{content:"";position:absolute;left:2px;top:3px;width:13px;height:10px;border:2px solid #11a9d8;border-radius:3px;transform:skewY(-7deg);}
   .ui-icon-routeplan:after{content:"";position:absolute;left:5px;top:8px;width:9px;height:2px;background:#f4c51b;box-shadow:-2px 4px 0 #f4c51b;transform:rotate(-28deg);transform-origin:left center;border-radius:2px;}
-  .planning-modal-card{width:min(1040px,100%);}
-  .planning-summary{display:flex;flex-wrap:wrap;gap:10px;margin:0 0 22px;}
-  .planning-summary span{display:inline-flex;align-items:center;gap:7px;padding:7px 10px;border:1px solid rgba(255,255,255,.12);border-radius:999px;background:rgba(255,255,255,.035);font:700 10px 'IBM Plex Mono',monospace;color:rgba(255,255,255,.68);letter-spacing:.05em;text-transform:uppercase;}
+  .planning-modal-card{width:min(1180px,100%);max-height:min(90vh,920px);padding:34px;}
+  .planning-summary{display:flex;flex-wrap:wrap;gap:10px;margin:0 0 26px;}
+  .planning-summary span{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border:1px solid rgba(255,255,255,.13);border-radius:999px;background:rgba(255,255,255,.035);font:700 10px 'IBM Plex Mono',monospace;color:rgba(255,255,255,.68);letter-spacing:.05em;text-transform:uppercase;}
   .planning-summary b{color:#f4c51b;font-weight:700;}
-  .planning-chapter{margin:0 0 24px;border:1px solid rgba(255,255,255,.11);border-radius:14px;background:rgba(0,0,0,.12);overflow:hidden;}
-  .planning-chapter-head{display:flex;align-items:baseline;gap:12px;padding:13px 16px 11px;border-bottom:1px solid rgba(255,255,255,.10);}
-  .planning-chapter-num{font:700 10px 'IBM Plex Mono',monospace;color:#f4c51b;border:1px solid rgba(244,197,27,.5);border-radius:50%;width:24px;height:24px;display:grid;place-items:center;flex:0 0 auto;}
-  .planning-chapter-title{font:800 17px 'Spectral',serif;color:#fff;}
-  .planning-chapter-sub{font:italic 11px Inter,sans-serif;color:rgba(255,255,255,.42);margin-left:auto;}
-  .planning-legs{padding:3px 16px 9px;}
-  .planning-leg{display:grid;grid-template-columns:36px minmax(0,1fr) 24px minmax(0,1fr);gap:9px;align-items:center;padding:11px 0;border-bottom:1px solid rgba(255,255,255,.07);}
+  .planning-chapter{position:relative;margin:0 0 30px;border:1px solid rgba(255,255,255,.13);border-radius:18px;background:linear-gradient(180deg,rgba(255,255,255,.035),rgba(0,0,0,.13));overflow:hidden;box-shadow:0 16px 36px rgba(0,0,0,.16);}
+  .planning-chapter-head{display:flex;align-items:center;gap:14px;padding:20px 24px 17px;border-bottom:1px solid rgba(255,255,255,.11);background:linear-gradient(90deg,rgba(244,197,27,.055),rgba(17,169,216,.025),transparent);}
+  .planning-chapter-num{font:700 11px 'IBM Plex Mono',monospace;color:#f4c51b;border:1px solid rgba(244,197,27,.55);border-radius:50%;width:34px;height:34px;display:grid;place-items:center;flex:0 0 auto;background:rgba(244,197,27,.05);}
+  .planning-chapter-copy{min-width:0;}
+  .planning-chapter-title{font:800 25px 'Spectral',serif;color:#fff;line-height:1.08;letter-spacing:.01em;}
+  .planning-chapter-sub{font:italic 12px Inter,sans-serif;color:rgba(255,255,255,.48);margin-top:5px;}
+  .planning-legs{padding:8px 24px 16px;}
+  .planning-leg{display:grid;grid-template-columns:42px minmax(0,1fr) 72px minmax(0,1fr);gap:18px;align-items:center;position:relative;padding:20px 4px;border-bottom:1px solid rgba(255,255,255,.08);}
   .planning-leg:last-child{border-bottom:0;}
-  .planning-leg-no{font:700 9px 'IBM Plex Mono',monospace;color:rgba(255,255,255,.34);}
-  .planning-place strong{display:block;color:rgba(255,255,255,.90);font:700 13px Inter,sans-serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-  .planning-place small{display:block;margin-top:3px;color:#f4c51b;font:600 9px 'IBM Plex Mono',monospace;letter-spacing:.05em;}
-  .planning-arrow{color:#f4c51b;text-align:center;font-size:15px;}
-  .planning-empty{padding:30px;text-align:center;color:rgba(255,255,255,.52);font:12px Inter,sans-serif;}
-  @media(max-width:700px){.planning-chapter-sub{display:none}.planning-leg{grid-template-columns:26px minmax(0,1fr) 18px minmax(0,1fr);gap:6px}.planning-place strong{font-size:11px}.planning-place small{font-size:8px}.planning-summary span{font-size:9px}}
+  .planning-leg-no{font:700 10px 'IBM Plex Mono',monospace;color:rgba(255,255,255,.34);align-self:start;padding-top:6px;}
+  .planning-place{min-width:0;}
+  .planning-place strong{display:flex;align-items:center;gap:10px;color:#fff;font:800 23px 'Spectral',serif;line-height:1.08;white-space:normal;overflow:visible;}
+  .planning-place small{display:flex;align-items:center;gap:8px;margin-top:7px;color:rgba(255,255,255,.54);font:600 10px 'IBM Plex Mono',monospace;letter-spacing:.03em;text-transform:none;}
+  .planning-place .planning-flag{width:22px;height:15px;display:inline-block;flex:0 0 auto;border-radius:2px;box-shadow:0 1px 3px rgba(0,0,0,.35);}
+  .planning-arrow{position:relative;color:#f4c51b;text-align:center;font-size:22px;line-height:1;}
+  .planning-arrow:before,.planning-arrow:after{content:"";position:absolute;top:50%;width:26px;height:1px;background:rgba(244,197,27,.34);}
+  .planning-arrow:before{right:calc(50% + 13px);}
+  .planning-arrow:after{left:calc(50% + 13px);}
+  .planning-empty{padding:40px;text-align:center;color:rgba(255,255,255,.52);font:12px Inter,sans-serif;}
+  @media(max-width:700px){.planning-modal-card{padding:22px}.planning-chapter-head{padding:16px 16px 14px}.planning-chapter-title{font-size:21px}.planning-chapter-sub{display:block;font-size:10px}.planning-legs{padding:5px 16px 12px}.planning-leg{grid-template-columns:22px minmax(0,1fr);gap:10px;padding:16px 0}.planning-arrow{grid-column:2;text-align:left;font-size:18px;padding:0 0 0 16px}.planning-arrow:before,.planning-arrow:after{display:none}.planning-place strong{font-size:20px}.planning-place small{font-size:9px}.planning-summary span{font-size:9px}}
   .pix-box{display:grid;place-items:center;min-height:286px;border:1px dashed rgba(255,255,255,.18);border-radius:14px;background:rgba(0,0,0,.16);padding:18px;box-sizing:border-box}
   #pixQr{width:244px;height:244px;padding:10px;background:#fff;border-radius:14px;display:grid;place-items:center;overflow:hidden;box-sizing:border-box;margin:0 auto}
   #pixQr img,#pixQr canvas{width:220px!important;height:220px!important;display:block!important;margin:0!important}
@@ -3735,18 +3741,46 @@ async function loadAirportsDatabase(){
   var planningData=null;
   function esc(v){return String(v==null?'':v).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
   function openPlanningModal(){var m=document.getElementById('planningModal');if(!m)return;m.classList.add('open');m.setAttribute('aria-hidden','false');loadPlanning();}
+  var ICAO_COUNTRIES={
+    SB:['br','Brasil','Brazil'],SC:['cl','Chile','Chile'],SA:['ar','Argentina','Argentina'],SG:['py','Paraguai','Paraguay'],SE:['ec','Equador','Ecuador'],SK:['co','Colômbia','Colombia'],SP:['pe','Peru','Peru'],SU:['uy','Uruguai','Uruguay'],
+    TG:['gd','Granada','Grenada'],TF:['mf','São Martinho','Saint Martin'],MB:['tc','Turks e Caicos','Turks and Caicos'],MY:['bs','Bahamas','Bahamas'],MG:['gt','Guatemala','Guatemala'],MM:['mx','México','Mexico'],MP:['pa','Panamá','Panama'],MR:['cr','Costa Rica','Costa Rica'],
+    K:['us','Estados Unidos','United States'],KC:['us','Estados Unidos','United States'],KD:['us','Estados Unidos','United States'],KF:['us','Estados Unidos','United States'],KL:['us','Estados Unidos','United States'],KO:['us','Estados Unidos','United States'],KP:['us','Estados Unidos','United States'],KS:['us','Estados Unidos','United States'],FD:['us','Estados Unidos','United States'],X6:['us','Estados Unidos','United States'],PA:['us','Estados Unidos','United States'],
+    CY:['ca','Canadá','Canada'],EG:['gb','Reino Unido','United Kingdom'],EK:['fo','Ilhas Faroé','Faroe Islands'],GE:['es','Espanha','Spain'],LE:['es','Espanha','Spain'],LF:['fr','França','France'],LG:['gr','Grécia','Greece'],LI:['it','Itália','Italy'],LP:['pt','Portugal','Portugal'],LX:['gi','Gibraltar','Gibraltar'],BI:['is','Islândia','Iceland'],BG:['gl','Groenlândia','Greenland'],
+    HE:['eg','Egito','Egypt'],OE:['sa','Arábia Saudita','Saudi Arabia'],OM:['ae','Emirados Árabes Unidos','United Arab Emirates'],
+    RC:['tw','Taiwan','Taiwan'],RK:['kr','Coreia do Sul','South Korea'],RP:['ph','Filipinas','Philippines'],UH:['ru','Rússia','Russia'],
+    VA:['in','Índia','India'],VE:['in','Índia','India'],VI:['in','Índia','India'],VT:['th','Tailândia','Thailand'],WA:['id','Indonésia','Indonesia'],WM:['my','Malásia','Malaysia'],WP:['tl','Timor-Leste','Timor-Leste'],YP:['au','Austrália','Australia']
+  };
+  function placeMeta(icao,lang){
+    var code=String(icao||'').toUpperCase();
+    var key=code.slice(0,2);
+    var meta=(code==='TFFJ')?['bl','São Bartolomeu','Saint Barthélemy']:(ICAO_COUNTRIES[key]||null);
+    if(!meta)return {cc:'un',pt:'',en:''};
+    return {cc:meta[0],pt:meta[1],en:meta[2]};
+  }
+  function renderPlace(name,icao,lang){
+    var m=placeMeta(icao,lang);var country=lang==='en'?m.en:m.pt;
+    var flag=m.cc!=='un'?'<span class="fi fi-'+m.cc+' planning-flag" aria-hidden="true"></span>':'';
+    var countryLine=country?(flag+esc(country)):flag;
+    return '<div class="planning-place"><strong>'+esc(name||'—')+'</strong><small>'+countryLine+'</small></div>';
+  }
   function renderPlanning(data){
     var summary=document.getElementById('planningSummary'),list=document.getElementById('planningList');if(!summary||!list)return;
-    var total=Number(data.totalFlights)||0;var chapters=Array.isArray(data.chapters)?data.chapters:[];var countries=new Set();chapters.forEach(function(ch){(ch.legs||[]).forEach(function(l){var c=String(l.toIcao||'').slice(0,2);if(c)countries.add(c);});});
-    summary.innerHTML='<span><b>'+total+'</b> etapas previstas</span><span><b>5</b> continentes</span><span><b>'+chapters.length+'</b> capítulos</span>';
+    var total=Number(data.totalFlights)||0;var chapters=Array.isArray(data.chapters)?data.chapters:[];
+    summary.innerHTML='<span><b>'+total+'</b> etapas previstas</span><span><b>5</b> continentes</span><span><b>'+chapters.length+'</b> etapas da jornada</span>';
     if(!chapters.length){list.innerHTML='<div class="planning-empty">Planejamento indisponível.</div>';return;}
-    list.innerHTML=chapters.map(function(ch,i){var legs=Array.isArray(ch.legs)?ch.legs:[];return '<section class="planning-chapter"><div class="planning-chapter-head"><div class="planning-chapter-num">'+String(i+1).padStart(2,'0')+'</div><div class="planning-chapter-title">'+esc(ch.title||'Rota')+'</div><div class="planning-chapter-sub">'+esc(ch.subtitle||'')+'</div></div><div class="planning-legs">'+legs.map(function(l,j){return '<div class="planning-leg"><div class="planning-leg-no">'+String(j+1).padStart(2,'0')+'</div><div class="planning-place"><strong>'+esc(l.from||'—')+'</strong><small>'+esc(l.fromIcao||'—')+'</small></div><div class="planning-arrow">→</div><div class="planning-place"><strong>'+esc(l.to||'—')+'</strong><small>'+esc(l.toIcao||'—')+'</small></div></div>';}).join('')+'</div></section>';}).join('');
+    var lang=document.documentElement.lang==='en'?'en':'pt';
+    list.innerHTML=chapters.map(function(ch,i){
+      var legs=Array.isArray(ch.legs)?ch.legs:[];
+      return '<section class="planning-chapter"><div class="planning-chapter-head"><div class="planning-chapter-num">'+String(i+1).padStart(2,'0')+'</div><div class="planning-chapter-copy"><div class="planning-chapter-title">'+esc(ch.title||'Rota')+'</div><div class="planning-chapter-sub">'+esc(ch.subtitle||'')+'</div></div></div><div class="planning-legs">'+legs.map(function(l,j){return '<div class="planning-leg"><div class="planning-leg-no">'+String(j+1).padStart(2,'0')+'</div>'+renderPlace(l.from,l.fromIcao,lang)+'<div class="planning-arrow" aria-hidden="true">→</div>'+renderPlace(l.to,l.toIcao,lang)+'</div>';}).join('')+'</div></section>';
+    }).join('');
   }
   async function loadPlanning(){
     var list=document.getElementById('planningList');if(!list)return;
     try{var r=await fetch('planning.json?ts='+Date.now(),{cache:'no-store'});if(!r.ok)throw new Error('HTTP '+r.status);planningData=await r.json();renderPlanning(planningData);}catch(e){console.warn('Planning load failed:',e);list.innerHTML='<div class="planning-empty">O planejamento ainda não foi publicado. Atualize o arquivo <b>planning.json</b> no GitHub Pages.</div>';}
   }
   function initPlanningButton(){var b=document.getElementById('planningBtn');if(b&&!b._bound){b._bound=true;b.addEventListener('click',openPlanningModal);}}
+  var langObserver=new MutationObserver(function(){if(planningData&&document.getElementById('planningModal')?.classList.contains('open'))renderPlanning(planningData);});
+  if(document.documentElement)langObserver.observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',initPlanningButton);else initPlanningButton();
 })();
 </script>
