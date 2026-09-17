@@ -310,5 +310,13 @@
     "country": "ES",
     "lat": 35.2798,
     "lon": -2.95626
+  },
+  {
+    "icao": "LEMH",
+    "name": "Menorca Airport",
+    "muni": "Mahón (Maó)",
+    "country": "ES",
+    "lat": 39.862598,
+    "lon": 4.21865
   }
 ]
