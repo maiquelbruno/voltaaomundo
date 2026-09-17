@@ -1,17 +1,17 @@
 {
   "schema": "voltaomundo.journey.v1",
-  "updatedAt": "2026-09-15T02:54:43.336Z",
+  "updatedAt": "2026-09-17T04:13:04.410Z",
   "title": "Volta ao Mundo",
   "progress": {
-    "completedFlights": 38,
-    "totalFlights": 111,
-    "percent": 34
+    "completedFlights": 39,
+    "totalFlights": 112,
+    "percent": 35
   },
   "stats": {
-    "landings": 38,
-    "kilometers": 20679,
-    "flightMinutes": 4349,
-    "flightTime": "72h29"
+    "landings": 39,
+    "kilometers": 21557,
+    "flightMinutes": 4531,
+    "flightTime": "75h31"
   },
   "continents": {
     "completed": 2,
@@ -22,18 +22,18 @@
     ]
   },
   "current": {
-    "city": "Melilla",
-    "country": "Espanha",
-    "icao": "GEML",
-    "airportName": "",
-    "legId": 37
-  },
-  "next": {
     "city": "San Luis (Menorca)",
     "country": "Espanha",
     "icao": "LEMH",
     "airportName": "",
     "legId": 38
+  },
+  "next": {
+    "city": "Palermo",
+    "country": "Itália",
+    "icao": "LICJ",
+    "airportName": "",
+    "legId": 39
   },
   "legs": [
     {
@@ -692,12 +692,12 @@
         "name": "San Luis (Menorca)",
         "icao": "LEMH"
       },
-      "completed": false,
-      "nm": 0,
-      "duration": "0h00",
+      "completed": true,
+      "nm": 474,
+      "duration": "3h02",
       "chapter": "Mediterrâneo & Norte da África",
       "continent": "Europa",
-      "km": 0
+      "km": 878
     },
     {
       "id": 39,
