@@ -318,5 +318,13 @@
     "country": "ES",
     "lat": 39.862598,
     "lon": 4.21865
+  },
+  {
+    "icao": "LICJ",
+    "name": "Falcone–Borsellino Airport",
+    "muni": "Palermo",
+    "country": "IT",
+    "lat": 38.175999,
+    "lon": 13.091
   }
 ]
