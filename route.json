@@ -326,5 +326,13 @@
     "country": "IT",
     "lat": 38.175999,
     "lon": 13.091
+  },
+  {
+    "icao": "LGKF",
+    "name": "Kefallinia Airport",
+    "muni": "Kefallinia Island",
+    "country": "GR",
+    "lat": 38.12009811401367,
+    "lon": 20.500499725341797
   }
 ]

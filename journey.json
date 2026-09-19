@@ -1,17 +1,17 @@
 {
   "schema": "voltaomundo.journey.v1",
-  "updatedAt": "2026-09-18T02:25:29.002Z",
+  "updatedAt": "2026-09-19T13:05:20.830Z",
   "title": "Volta ao Mundo",
   "progress": {
-    "completedFlights": 40,
-    "totalFlights": 112,
+    "completedFlights": 41,
+    "totalFlights": 113,
     "percent": 36
   },
   "stats": {
-    "landings": 40,
-    "kilometers": 22417,
-    "flightMinutes": 4693,
-    "flightTime": "78h13"
+    "landings": 41,
+    "kilometers": 23165,
+    "flightMinutes": 4864,
+    "flightTime": "81h04"
   },
   "continents": {
     "completed": 2,
@@ -22,18 +22,18 @@
     ]
   },
   "current": {
-    "city": "Palermo",
-    "country": "Itália",
-    "icao": "LICJ",
+    "city": "Kefallinia",
+    "country": "Grécia",
+    "icao": "LGKF",
     "airportName": "",
-    "legId": 39
+    "legId": 40
   },
   "next": {
     "city": "Athens",
     "country": "Grécia",
     "icao": "LGAV",
     "airportName": "",
-    "legId": 40
+    "legId": 112
   },
   "legs": [
     {
@@ -721,6 +721,23 @@
       "from": {
         "name": "Palermo",
         "icao": "LICJ"
+      },
+      "to": {
+        "name": "Kefallinia",
+        "icao": "LGKF"
+      },
+      "completed": true,
+      "nm": 404,
+      "duration": "2h51",
+      "chapter": "Mediterrâneo & Norte da África",
+      "continent": "Europa",
+      "km": 748
+    },
+    {
+      "id": 112,
+      "from": {
+        "name": "Kefallinia",
+        "icao": "LGKF"
       },
       "to": {
         "name": "Athens",

@@ -1,9 +1,9 @@
 {
   "schema": "voltaomundo.planning.v1",
-  "updatedAt": "2026-09-16T02:50:04.403Z",
+  "updatedAt": "2026-09-19T13:05:25.436Z",
   "title": "Volta ao Mundo",
   "description": "Planejamento previsto da jornada; a execução pode ser adaptada conforme autonomia e condições operacionais.",
-  "totalFlights": 112,
+  "totalFlights": 113,
   "continents": 5,
   "chapters": [
     {
@@ -323,6 +323,13 @@
           "id": "40",
           "from": "Palermo",
           "fromIcao": "LICJ",
+          "to": "Kefallinia",
+          "toIcao": "LGKF"
+        },
+        {
+          "id": "112",
+          "from": "Kefallinia",
+          "fromIcao": "LGKF",
           "to": "Athens",
           "toIcao": "LGAV"
         },
