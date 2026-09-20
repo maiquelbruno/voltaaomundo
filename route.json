@@ -334,5 +334,13 @@
     "country": "GR",
     "lat": 38.12009811401367,
     "lon": 20.500499725341797
+  },
+  {
+    "icao": "LGAV",
+    "name": "Athens Eleftherios Venizelos International Airport",
+    "muni": "Spata-Artemida",
+    "country": "GR",
+    "lat": 37.936401,
+    "lon": 23.9445
   }
 ]
