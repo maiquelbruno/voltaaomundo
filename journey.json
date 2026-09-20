@@ -1,10 +1,10 @@
 {
   "schema": "voltaomundo.journey.v1",
-  "updatedAt": "2026-09-20T01:45:50.815Z",
+  "updatedAt": "2026-09-20T10:55:22.455Z",
   "title": "Volta ao Mundo",
   "progress": {
     "completedFlights": 42,
-    "totalFlights": 113,
+    "totalFlights": 114,
     "percent": 37
   },
   "stats": {
@@ -29,9 +29,9 @@
     "legId": 112
   },
   "next": {
-    "city": "Mersa Matruh",
-    "country": "Egito",
-    "icao": "HEMM",
+    "city": "Heraklion",
+    "country": "Grécia",
+    "icao": "LGIR",
     "airportName": "",
     "legId": 41
   },
@@ -755,6 +755,23 @@
       "from": {
         "name": "Athens",
         "icao": "LGAV"
+      },
+      "to": {
+        "name": "Heraklion",
+        "icao": "LGIR"
+      },
+      "completed": false,
+      "nm": 189,
+      "duration": "1h10",
+      "chapter": "Mediterrâneo & Norte da África",
+      "continent": "Europa",
+      "km": 350
+    },
+    {
+      "id": 113,
+      "from": {
+        "name": "Heraklion",
+        "icao": "LGIR"
       },
       "to": {
         "name": "Mersa Matruh",
