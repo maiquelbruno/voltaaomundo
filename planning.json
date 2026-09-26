@@ -1,6 +1,6 @@
 {
   "schema": "voltaomundo.planning.v1",
-  "updatedAt": "2026-09-26T13:39:07.983Z",
+  "updatedAt": "2026-09-26T16:13:18.507Z",
   "title": "Volta ao Mundo",
   "description": "Planejamento previsto da jornada; a execução pode ser adaptada conforme autonomia e condições operacionais.",
   "totalFlights": 114,
@@ -342,9 +342,9 @@
         },
         {
           "id": "113",
-          "from": "Heraklion",
+          "from": "Mersa Matruh",
           "fromIcao": "LGIR",
-          "to": "Mersa Matruh",
+          "to": "Iraklion",
           "toIcao": "HEMM"
         },
         {
