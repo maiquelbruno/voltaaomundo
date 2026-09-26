@@ -1,6 +1,6 @@
 {
   "schema": "voltaomundo.planning.v1",
-  "updatedAt": "2026-09-26T11:07:20.683Z",
+  "updatedAt": "2026-09-26T13:39:07.983Z",
   "title": "Volta ao Mundo",
   "description": "Planejamento previsto da jornada; a execução pode ser adaptada conforme autonomia e condições operacionais.",
   "totalFlights": 114,
