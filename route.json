@@ -358,5 +358,13 @@
     "country": "GR",
     "lat": 35.339699,
     "lon": 25.1803
+  },
+  {
+    "icao": "HEMM",
+    "name": "Mersa Matruh International Airport",
+    "muni": "Marsa Matruh",
+    "country": "EG",
+    "lat": 31.324313,
+    "lon": 27.22227
   }
 ]
