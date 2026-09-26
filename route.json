@@ -366,5 +366,13 @@
     "country": "EG",
     "lat": 31.324313,
     "lon": 27.22227
+  },
+  {
+    "icao": "HECA",
+    "name": "Cairo International Airport",
+    "muni": "Cairo",
+    "country": "EG",
+    "lat": 30.111534,
+    "lon": 31.396694
   }
 ]
