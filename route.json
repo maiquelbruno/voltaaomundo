@@ -350,5 +350,13 @@
     "country": "GR",
     "lat": 35.339699,
     "lon": 25.1803
+  },
+  {
+    "icao": "LGIR",
+    "name": "Heraklion International Nikos Kazantzakis Airport",
+    "muni": "Heraklion",
+    "country": "GR",
+    "lat": 35.339699,
+    "lon": 25.1803
   }
 ]

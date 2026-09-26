@@ -1,39 +1,40 @@
 {
   "schema": "voltaomundo.journey.v1",
-  "updatedAt": "2026-09-20T10:55:22.455Z",
+  "updatedAt": "2026-09-26T11:07:16.692Z",
   "title": "Volta ao Mundo",
   "progress": {
-    "completedFlights": 42,
+    "completedFlights": 44,
     "totalFlights": 114,
-    "percent": 37
+    "percent": 39
   },
   "stats": {
-    "landings": 42,
-    "kilometers": 23517,
-    "flightMinutes": 4939,
-    "flightTime": "82h19"
+    "landings": 44,
+    "kilometers": 24420,
+    "flightMinutes": 5125,
+    "flightTime": "85h25"
   },
   "continents": {
-    "completed": 2,
+    "completed": 3,
     "total": 5,
     "names": [
       "Américas",
-      "Europa"
+      "Europa",
+      "África"
     ]
   },
   "current": {
-    "city": "Athens",
-    "country": "Grécia",
-    "icao": "LGAV",
+    "city": "Mersa Matruh",
+    "country": "Egito",
+    "icao": "HEMM",
     "airportName": "",
-    "legId": 112
+    "legId": 113
   },
   "next": {
-    "city": "Heraklion",
-    "country": "Grécia",
-    "icao": "LGIR",
+    "city": "Cairo",
+    "country": "Egito",
+    "icao": "HECA",
     "airportName": "",
-    "legId": 41
+    "legId": 42
   },
   "legs": [
     {
@@ -760,7 +761,7 @@
         "name": "Heraklion",
         "icao": "LGIR"
       },
-      "completed": false,
+      "completed": true,
       "nm": 189,
       "duration": "1h10",
       "chapter": "Mediterrâneo & Norte da África",
@@ -777,12 +778,12 @@
         "name": "Mersa Matruh",
         "icao": "HEMM"
       },
-      "completed": false,
-      "nm": 0,
-      "duration": "0h00",
+      "completed": true,
+      "nm": 299,
+      "duration": "1h56",
       "chapter": "Mediterrâneo & Norte da África",
       "continent": "África",
-      "km": 0
+      "km": 554
     },
     {
       "id": 42,
