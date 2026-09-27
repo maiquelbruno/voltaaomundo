@@ -1,17 +1,17 @@
 {
   "schema": "voltaomundo.journey.v1",
-  "updatedAt": "2026-09-26T16:13:14.181Z",
+  "updatedAt": "2026-09-27T12:10:23.945Z",
   "title": "Volta ao Mundo",
   "progress": {
-    "completedFlights": 45,
+    "completedFlights": 46,
     "totalFlights": 114,
-    "percent": 39
+    "percent": 40
   },
   "stats": {
-    "landings": 45,
-    "kilometers": 24904,
-    "flightMinutes": 5214,
-    "flightTime": "86h54"
+    "landings": 46,
+    "kilometers": 25404,
+    "flightMinutes": 5312,
+    "flightTime": "88h32"
   },
   "continents": {
     "completed": 3,
@@ -23,18 +23,18 @@
     ]
   },
   "current": {
-    "city": "Cairo",
-    "country": "Egito",
-    "icao": "HECA",
-    "airportName": "",
-    "legId": 42
-  },
-  "next": {
     "city": "Hurghada",
     "country": "Egito",
     "icao": "HEGN",
     "airportName": "",
     "legId": 43
+  },
+  "next": {
+    "city": "Al Jouf",
+    "country": "Arábia Saudita",
+    "icao": "OESK",
+    "airportName": "",
+    "legId": 44
   },
   "legs": [
     {
@@ -812,12 +812,12 @@
         "name": "Hurghada",
         "icao": "HEGN"
       },
-      "completed": false,
-      "nm": 0,
-      "duration": "0h00",
+      "completed": true,
+      "nm": 270,
+      "duration": "1h38",
       "chapter": "Mediterrâneo & Norte da África",
       "continent": "África",
-      "km": 0
+      "km": 500
     },
     {
       "id": 44,
