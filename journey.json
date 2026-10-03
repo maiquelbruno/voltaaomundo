@@ -1,40 +1,41 @@
 {
   "schema": "voltaomundo.journey.v1",
-  "updatedAt": "2026-09-27T12:10:23.945Z",
+  "updatedAt": "2026-10-03T13:52:09.417Z",
   "title": "Volta ao Mundo",
   "progress": {
-    "completedFlights": 46,
+    "completedFlights": 47,
     "totalFlights": 114,
-    "percent": 40
+    "percent": 41
   },
   "stats": {
-    "landings": 46,
-    "kilometers": 25404,
-    "flightMinutes": 5312,
-    "flightTime": "88h32"
+    "landings": 47,
+    "kilometers": 26156,
+    "flightMinutes": 5444,
+    "flightTime": "90h44"
   },
   "continents": {
-    "completed": 3,
+    "completed": 4,
     "total": 5,
     "names": [
       "Américas",
       "Europa",
-      "África"
+      "África",
+      "Ásia"
     ]
   },
   "current": {
-    "city": "Hurghada",
-    "country": "Egito",
-    "icao": "HEGN",
-    "airportName": "",
-    "legId": 43
-  },
-  "next": {
     "city": "Al Jouf",
     "country": "Arábia Saudita",
     "icao": "OESK",
     "airportName": "",
     "legId": 44
+  },
+  "next": {
+    "city": "Riyadh",
+    "country": "Arábia Saudita",
+    "icao": "OERK",
+    "airportName": "",
+    "legId": 45
   },
   "legs": [
     {
@@ -829,12 +830,12 @@
         "name": "Al Jouf",
         "icao": "OESK"
       },
-      "completed": false,
-      "nm": 0,
-      "duration": "0h00",
+      "completed": true,
+      "nm": 406,
+      "duration": "2h12",
       "chapter": "Península Arábica",
       "continent": "Ásia",
-      "km": 0
+      "km": 752
     },
     {
       "id": 45,

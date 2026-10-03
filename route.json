@@ -382,5 +382,13 @@
     "country": "EG",
     "lat": 27.176776,
     "lon": 33.796692
+  },
+  {
+    "icao": "OESK",
+    "name": "Al-Jawf International Airport",
+    "muni": "Al-Jawf",
+    "country": "SA",
+    "lat": 29.783301,
+    "lon": 40.100905
   }
 ]
