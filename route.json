@@ -398,5 +398,13 @@
     "country": "SA",
     "lat": 24.9576,
     "lon": 46.698799
+  },
+  {
+    "icao": "OEDF",
+    "name": "King Fahd International Airport",
+    "muni": "Ad Dammam",
+    "country": "SA",
+    "lat": 26.4691,
+    "lon": 49.798209
   }
 ]
