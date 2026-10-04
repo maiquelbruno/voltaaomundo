@@ -390,5 +390,13 @@
     "country": "SA",
     "lat": 29.783301,
     "lon": 40.100905
+  },
+  {
+    "icao": "OERK",
+    "name": "King Khalid International Airport",
+    "muni": "Riyadh",
+    "country": "SA",
+    "lat": 24.9576,
+    "lon": 46.698799
   }
 ]
