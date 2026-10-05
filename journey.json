@@ -1,17 +1,17 @@
 {
   "schema": "voltaomundo.journey.v1",
-  "updatedAt": "2026-10-04T22:54:10.733Z",
+  "updatedAt": "2026-10-05T03:06:27.632Z",
   "title": "Volta ao Mundo",
   "progress": {
-    "completedFlights": 49,
+    "completedFlights": 50,
     "totalFlights": 114,
-    "percent": 43
+    "percent": 44
   },
   "stats": {
-    "landings": 49,
-    "kilometers": 27600,
-    "flightMinutes": 5815,
-    "flightTime": "96h55"
+    "landings": 50,
+    "kilometers": 28258,
+    "flightMinutes": 5940,
+    "flightTime": "99h00"
   },
   "continents": {
     "completed": 4,
@@ -24,18 +24,18 @@
     ]
   },
   "current": {
-    "city": "Dammam",
-    "country": "Arábia Saudita",
-    "icao": "OEDF",
-    "airportName": "",
-    "legId": 46
-  },
-  "next": {
     "city": "Dubai",
     "country": "Emirados Árabes Unidos",
     "icao": "OMDB",
     "airportName": "",
     "legId": 47
+  },
+  "next": {
+    "city": "Gujarat",
+    "country": "Índia",
+    "icao": "VAAH",
+    "airportName": "",
+    "legId": 48
   },
   "legs": [
     {
@@ -881,12 +881,12 @@
         "name": "Dubai",
         "icao": "OMDB"
       },
-      "completed": false,
-      "nm": 0,
-      "duration": "0h00",
+      "completed": true,
+      "nm": 355,
+      "duration": "2h05",
       "chapter": "Península Arábica",
       "continent": "Ásia",
-      "km": 0
+      "km": 657
     },
     {
       "id": 48,

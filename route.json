@@ -406,5 +406,13 @@
     "country": "SA",
     "lat": 26.4691,
     "lon": 49.798209
+  },
+  {
+    "icao": "OMDB",
+    "name": "Dubai International Airport",
+    "muni": "Dubai",
+    "country": "AE",
+    "lat": 25.24979,
+    "lon": 55.370992
   }
 ]
