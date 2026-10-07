@@ -1,9 +1,9 @@
 {
   "schema": "voltaomundo.planning.v1",
-  "updatedAt": "2026-09-26T16:13:18.507Z",
+  "updatedAt": "2026-10-07T00:58:39.725Z",
   "title": "Volta ao Mundo",
   "description": "Planejamento previsto da jornada; a execução pode ser adaptada conforme autonomia e condições operacionais.",
-  "totalFlights": 114,
+  "totalFlights": 115,
   "continents": 5,
   "chapters": [
     {
@@ -407,6 +407,13 @@
           "id": "48",
           "from": "Dubai",
           "fromIcao": "OMDB",
+          "to": "Pasni",
+          "toIcao": "OPPI"
+        },
+        {
+          "id": "114",
+          "from": "Pasni",
+          "fromIcao": "OPPI",
           "to": "Gujarat",
           "toIcao": "VAAH"
         },
