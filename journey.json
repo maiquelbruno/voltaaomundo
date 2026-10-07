@@ -1,17 +1,17 @@
 {
   "schema": "voltaomundo.journey.v1",
-  "updatedAt": "2026-10-05T03:06:27.632Z",
+  "updatedAt": "2026-10-07T03:20:26.470Z",
   "title": "Volta ao Mundo",
   "progress": {
-    "completedFlights": 50,
-    "totalFlights": 114,
+    "completedFlights": 51,
+    "totalFlights": 115,
     "percent": 44
   },
   "stats": {
-    "landings": 50,
-    "kilometers": 28258,
-    "flightMinutes": 5940,
-    "flightTime": "99h00"
+    "landings": 51,
+    "kilometers": 29095,
+    "flightMinutes": 6118,
+    "flightTime": "101h58"
   },
   "continents": {
     "completed": 4,
@@ -24,18 +24,18 @@
     ]
   },
   "current": {
-    "city": "Dubai",
-    "country": "Emirados Árabes Unidos",
-    "icao": "OMDB",
+    "city": "Pasni",
+    "country": "",
+    "icao": "OPPI",
     "airportName": "",
-    "legId": 47
+    "legId": 48
   },
   "next": {
     "city": "Gujarat",
     "country": "Índia",
     "icao": "VAAH",
     "airportName": "",
-    "legId": 48
+    "legId": 114
   },
   "legs": [
     {
@@ -893,6 +893,23 @@
       "from": {
         "name": "Dubai",
         "icao": "OMDB"
+      },
+      "to": {
+        "name": "Pasni",
+        "icao": "OPPI"
+      },
+      "completed": true,
+      "nm": 452,
+      "duration": "2h58",
+      "chapter": "Ásia",
+      "continent": "Ásia",
+      "km": 837
+    },
+    {
+      "id": 114,
+      "from": {
+        "name": "Pasni",
+        "icao": "OPPI"
       },
       "to": {
         "name": "Gujarat",
