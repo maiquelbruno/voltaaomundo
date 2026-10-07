@@ -414,5 +414,13 @@
     "country": "AE",
     "lat": 25.24979,
     "lon": 55.370992
+  },
+  {
+    "icao": "OPPI",
+    "name": "Pasni Airport",
+    "muni": "Pasni",
+    "country": "PK",
+    "lat": 25.290501,
+    "lon": 63.3451
   }
 ]
