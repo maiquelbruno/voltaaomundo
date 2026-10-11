@@ -422,5 +422,13 @@
     "country": "PK",
     "lat": 25.290501,
     "lon": 63.3451
+  },
+  {
+    "icao": "VAAH",
+    "name": "Sardar Vallabh Patel International Airport",
+    "muni": "Ahmedabad",
+    "country": "IN",
+    "lat": 23.0772,
+    "lon": 72.634697
   }
 ]

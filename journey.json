@@ -1,17 +1,17 @@
 {
   "schema": "voltaomundo.journey.v1",
-  "updatedAt": "2026-10-07T03:20:26.470Z",
+  "updatedAt": "2026-10-11T13:02:44.106Z",
   "title": "Volta ao Mundo",
   "progress": {
-    "completedFlights": 51,
+    "completedFlights": 52,
     "totalFlights": 115,
-    "percent": 44
+    "percent": 45
   },
   "stats": {
-    "landings": 51,
-    "kilometers": 29095,
-    "flightMinutes": 6118,
-    "flightTime": "101h58"
+    "landings": 52,
+    "kilometers": 30138,
+    "flightMinutes": 6325,
+    "flightTime": "105h25"
   },
   "continents": {
     "completed": 4,
@@ -24,18 +24,18 @@
     ]
   },
   "current": {
-    "city": "Pasni",
-    "country": "",
-    "icao": "OPPI",
-    "airportName": "",
-    "legId": 48
-  },
-  "next": {
     "city": "Gujarat",
     "country": "Índia",
     "icao": "VAAH",
     "airportName": "",
     "legId": 114
+  },
+  "next": {
+    "city": "Agra",
+    "country": "Índia",
+    "icao": "VIAG",
+    "airportName": "",
+    "legId": 49
   },
   "legs": [
     {
@@ -915,12 +915,12 @@
         "name": "Gujarat",
         "icao": "VAAH"
       },
-      "completed": false,
-      "nm": 0,
-      "duration": "0h00",
+      "completed": true,
+      "nm": 563,
+      "duration": "3h27",
       "chapter": "Ásia",
       "continent": "Ásia",
-      "km": 0
+      "km": 1043
     },
     {
       "id": 49,
