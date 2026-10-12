@@ -430,5 +430,13 @@
     "country": "IN",
     "lat": 23.0772,
     "lon": 72.634697
+  },
+  {
+    "icao": "VIAG",
+    "name": "Agra Airport / Agra Air Force Station",
+    "muni": "Agra",
+    "country": "IN",
+    "lat": 27.157975,
+    "lon": 77.961025
   }
 ]

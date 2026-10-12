@@ -1,17 +1,17 @@
 {
   "schema": "voltaomundo.journey.v1",
-  "updatedAt": "2026-10-11T13:02:44.106Z",
+  "updatedAt": "2026-10-12T16:38:57.670Z",
   "title": "Volta ao Mundo",
   "progress": {
-    "completedFlights": 52,
+    "completedFlights": 53,
     "totalFlights": 115,
-    "percent": 45
+    "percent": 46
   },
   "stats": {
-    "landings": 52,
-    "kilometers": 30138,
-    "flightMinutes": 6325,
-    "flightTime": "105h25"
+    "landings": 53,
+    "kilometers": 30856,
+    "flightMinutes": 6472,
+    "flightTime": "107h52"
   },
   "continents": {
     "completed": 4,
@@ -24,18 +24,18 @@
     ]
   },
   "current": {
-    "city": "Gujarat",
-    "country": "Índia",
-    "icao": "VAAH",
-    "airportName": "",
-    "legId": 114
-  },
-  "next": {
     "city": "Agra",
     "country": "Índia",
     "icao": "VIAG",
     "airportName": "",
     "legId": 49
+  },
+  "next": {
+    "city": "Odisha",
+    "country": "Índia",
+    "icao": "VEBS",
+    "airportName": "",
+    "legId": 50
   },
   "legs": [
     {
@@ -932,12 +932,12 @@
         "name": "Agra",
         "icao": "VIAG"
       },
-      "completed": false,
-      "nm": 0,
-      "duration": "0h00",
+      "completed": true,
+      "nm": 388,
+      "duration": "2h27",
       "chapter": "Ásia",
       "continent": "Ásia",
-      "km": 0
+      "km": 719
     },
     {
       "id": 50,
