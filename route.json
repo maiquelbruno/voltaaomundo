@@ -438,5 +438,13 @@
     "country": "IN",
     "lat": 27.157975,
     "lon": 77.961025
+  },
+  {
+    "icao": "VEBS",
+    "name": "Biju Patnaik International Airport",
+    "muni": "Bhubaneswar",
+    "country": "IN",
+    "lat": 20.251021,
+    "lon": 85.814747
   }
 ]
