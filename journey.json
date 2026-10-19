@@ -1,17 +1,17 @@
 {
   "schema": "voltaomundo.journey.v1",
-  "updatedAt": "2026-10-12T22:10:59.429Z",
+  "updatedAt": "2026-10-18T13:19:05.129Z",
   "title": "Volta ao Mundo",
   "progress": {
-    "completedFlights": 54,
-    "totalFlights": 115,
+    "completedFlights": 55,
+    "totalFlights": 116,
     "percent": 47
   },
   "stats": {
-    "landings": 54,
-    "kilometers": 32071,
-    "flightMinutes": 6728,
-    "flightTime": "112h08"
+    "landings": 55,
+    "kilometers": 33393,
+    "flightMinutes": 6991,
+    "flightTime": "116h31"
   },
   "continents": {
     "completed": 4,
@@ -24,11 +24,11 @@
     ]
   },
   "current": {
-    "city": "Odisha",
-    "country": "Índia",
-    "icao": "VEBS",
+    "city": "Pathein",
+    "country": "",
+    "icao": "VYPN",
     "airportName": "",
-    "legId": 50
+    "legId": 115
   },
   "next": {
     "city": "Bangkok",
@@ -957,10 +957,27 @@
       "km": 1215
     },
     {
-      "id": 51,
+      "id": 115,
       "from": {
         "name": "Odisha",
         "icao": "VEBS"
+      },
+      "to": {
+        "name": "Pathein",
+        "icao": "VYPN"
+      },
+      "completed": true,
+      "nm": 714,
+      "duration": "4h23",
+      "chapter": "Ásia",
+      "continent": "Ásia",
+      "km": 1322
+    },
+    {
+      "id": 51,
+      "from": {
+        "name": "Pathein",
+        "icao": "VYPN"
       },
       "to": {
         "name": "Bangkok",

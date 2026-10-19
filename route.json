@@ -446,5 +446,13 @@
     "country": "IN",
     "lat": 20.251021,
     "lon": 85.814747
+  },
+  {
+    "icao": "VYPN",
+    "name": "Pathein Airport",
+    "muni": "Pathein",
+    "country": "MM",
+    "lat": 16.815201,
+    "lon": 94.7799
   }
 ]
