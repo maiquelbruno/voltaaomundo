@@ -1,17 +1,17 @@
 {
   "schema": "voltaomundo.journey.v1",
-  "updatedAt": "2026-10-18T13:19:05.129Z",
+  "updatedAt": "2026-10-20T00:55:34.933Z",
   "title": "Volta ao Mundo",
   "progress": {
-    "completedFlights": 55,
+    "completedFlights": 56,
     "totalFlights": 116,
-    "percent": 47
+    "percent": 48
   },
   "stats": {
-    "landings": 55,
-    "kilometers": 33393,
-    "flightMinutes": 6991,
-    "flightTime": "116h31"
+    "landings": 56,
+    "kilometers": 34134,
+    "flightMinutes": 7150,
+    "flightTime": "119h10"
   },
   "continents": {
     "completed": 4,
@@ -24,18 +24,18 @@
     ]
   },
   "current": {
-    "city": "Pathein",
-    "country": "",
-    "icao": "VYPN",
-    "airportName": "",
-    "legId": 115
-  },
-  "next": {
     "city": "Bangkok",
     "country": "Tailândia",
     "icao": "VTBD",
     "airportName": "",
     "legId": 51
+  },
+  "next": {
+    "city": "Phuket",
+    "country": "Tailândia",
+    "icao": "VTSP",
+    "airportName": "",
+    "legId": 52
   },
   "legs": [
     {
@@ -983,12 +983,12 @@
         "name": "Bangkok",
         "icao": "VTBD"
       },
-      "completed": false,
-      "nm": 0,
-      "duration": "0h00",
+      "completed": true,
+      "nm": 400,
+      "duration": "2h39",
       "chapter": "Ásia",
       "continent": "Ásia",
-      "km": 0
+      "km": 741
     },
     {
       "id": 52,

@@ -454,5 +454,13 @@
     "country": "MM",
     "lat": 16.815201,
     "lon": 94.7799
+  },
+  {
+    "icao": "VTBD",
+    "name": "Don Mueang International Airport",
+    "muni": "Bangkok",
+    "country": "TH",
+    "lat": 13.9126,
+    "lon": 100.607002
   }
 ]
