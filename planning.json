@@ -1,9 +1,9 @@
 {
   "schema": "voltaomundo.planning.v1",
-  "updatedAt": "2026-10-11T13:02:48.536Z",
+  "updatedAt": "2026-10-22T11:29:39.085Z",
   "title": "Volta ao Mundo",
   "description": "Planejamento previsto da jornada; a execução pode ser adaptada conforme autonomia e condições operacionais.",
-  "totalFlights": 115,
+  "totalFlights": 116,
   "continents": 5,
   "chapters": [
     {
@@ -432,9 +432,16 @@
           "toIcao": "VEBS"
         },
         {
-          "id": "51",
+          "id": "115",
           "from": "Odisha",
           "fromIcao": "VEBS",
+          "to": "Pathein",
+          "toIcao": "VYPN"
+        },
+        {
+          "id": "51",
+          "from": "Pathein",
+          "fromIcao": "VYPN",
           "to": "Bangkok",
           "toIcao": "VTBD"
         },

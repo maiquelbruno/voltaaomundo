@@ -3446,14 +3446,17 @@ async function loadAirportsDatabase(){
     var root=document.getElementById('projectIntro');if(!root)return;
     var stops=document.getElementById('introStops'),distance=document.getElementById('introDistance');
     var progress=document.getElementById('introProgress'),progressBar=document.getElementById('introProgressBar');
-    var totalLandings=112;
-    var completedLandings=Math.min(Math.max(Number(route.length||0),0),totalLandings);
+    // Fonte da verdade: journey.json (gerado pelo Planejamento). Se não carregar, cai no comportamento antigo.
+    var jp=(journeyData&&journeyData.progress)||null, js=(journeyData&&journeyData.stats)||null;
+    var totalLandings=(jp&&Number(jp.totalFlights)>0)?Number(jp.totalFlights):112;
+    var rawCompleted=(jp&&isFinite(Number(jp.completedFlights)))?Number(jp.completedFlights):Number(route.length||0);
+    var completedLandings=Math.min(Math.max(rawCompleted,0),totalLandings);
     var percent=Math.min(100,Math.round((completedLandings/totalLandings)*100));
     if(progress)progress.textContent=completedLandings+' / '+totalLandings;
     var percentEl=document.getElementById('introPercent');if(percentEl)percentEl.textContent=percent+'%';
     if(progressBar)progressBar.style.width=percent+'%';
     if(stops)stops.textContent=String(completedLandings);
-    if(distance){var km=introDistanceKm();distance.textContent=km?Math.round(km).toLocaleString('pt-BR')+' km':'—';}
+    if(distance){var km=(js&&Number(js.kilometers)>0)?Number(js.kilometers):introDistanceKm();distance.textContent=km?Math.round(km).toLocaleString('pt-BR')+' km':'—';}
     renderIntroCountries();
     initLandingExtras();
     root.classList.remove('loading');root.classList.add('ready');
