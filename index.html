@@ -3977,7 +3977,21 @@ async function loadAirportsDatabase(){
   }
   function open(){
     var modal=document.getElementById('planningModal');if(!modal)return;
-    modal.classList.add('open');modal.setAttribute('aria-hidden','false');render();
+    modal.classList.add('open');modal.setAttribute('aria-hidden','false');render();loadLatest();
+  }
+  // Mostra de imediato o planejamento embutido e, se existir planning.json publicado, atualiza com ele.
+  async function loadLatest(){
+    try{
+      var ctl=typeof AbortController!=='undefined'?new AbortController():null;
+      var timer=ctl?setTimeout(function(){ctl.abort();},5000):null;
+      var opts={cache:'no-store'};if(ctl)opts.signal=ctl.signal;
+      var r=await fetch('./planning.json?ts='+Date.now(),opts);
+      if(timer)clearTimeout(timer);
+      if(!r.ok)throw new Error('HTTP '+r.status);
+      var d=await r.json();
+      if(!d||!Array.isArray(d.chapters)||!d.chapters.length)throw new Error('planning.json inválido.');
+      DATA=d;render();
+    }catch(e){console.warn('planning.json não disponível; mantendo planejamento incorporado:',e);}
   }
   function bind(){
     var b=document.getElementById('planningBtn');if(!b||b.__planningV2)return;b.__planningV2=true;
