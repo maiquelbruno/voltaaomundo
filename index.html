@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<script>console.log('Waipoints globo v3 — zoom fixo / rastro por perna / labels incrementais');</script>
 <meta charset="UTF-8">\n  <meta name="travel-track-update" content="logo-transparent-supporters-button-v2">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Maiquel pelo Mundo</title>
@@ -1803,6 +1806,13 @@ async function loadAirportsDatabase(){
   var cesiumViewer=null, globeStaticEntities=[], globeTrailEntity=null, globePlaneEntity=null, globeLabelEntities=[];
   var globeLabelOverlays=[], globeLabelHost=null;
   var globeFollowScale=1, globeFirstLegDone=false, globeFollowTarget=null;
+  // Zoom do voo: enquanto o usuário não mexe, cada perna usa a altura automática;
+  // depois que ele ajusta o zoom (roda do mouse ou zoom livre), essa distância
+  // PERMANECE fixa até o fim, em todas as pernas.
+  var globeUserRange=null, globeCurRange=null;
+  // Rastro: uma polilinha por perna (cada uma só com os pontos da própria perna).
+  var globeTrailLegEntities=[], globeLiveTrailEntity=null, globeLiveTrailPts=[], globeLiveTrailCart=[], globeLiveTrailMinStep=2000;
+  var globeOccluder=null;
 
   function initGlobe(){
     if(globeReady)return Promise.resolve(true);
@@ -1867,8 +1877,9 @@ async function loadAirportsDatabase(){
         e.preventDefault();
         var d=(typeof e.deltaY==='number')?e.deltaY:0;
         if(d!==0){
-          globeFollowScale*=Math.pow(1.12,d/100);
-          globeFollowScale=Math.max(0.08,Math.min(500,globeFollowScale));
+          var curR=(globeUserRange!=null)?globeUserRange:(globeCurRange||1000000);
+          globeUserRange=Math.max(300,Math.min(16000000,curR*Math.pow(1.12,d/100)));
+          globeCurRange=globeUserRange;
           requestGlobeRender();
         }
       };
@@ -1895,6 +1906,105 @@ async function loadAirportsDatabase(){
     return flat.length?Cesium.Cartesian3.fromDegreesArrayHeights(flat):[];
   }
 
+  // ---- Rastro do voo (uma polilinha por perna) ----
+  // Antes, um único rastro crescia a cada frame (até 5000 pontos) e era
+  // reconstruído inteiro o tempo todo: ficava cada vez mais pesado (pausas) e
+  // gerava uma linha duplicada. Agora cada perna tem a sua polilinha, com no
+  // máximo algumas centenas de pontos; as pernas já concluídas ficam fixas.
+  // ---- Rastro do voo: desenhado em um canvas 2D por cima do globo ----
+  // O rastro NÃO é mais uma polilinha do Cesium (que gerava linhas fantasmas
+  // ligando o avião a pontos antigos da rota). Cada perna guarda seus pontos;
+  // a cada quadro eles são projetados na tela e traçados com tracejado.
+  // Pontos do lado oculto da Terra não são desenhados (sem "Terra transparente").
+  var globeTrailLegs=[], globeTrailCanvas=null;
+  function ensureTrailCanvas(){
+    if(globeTrailCanvas||!cesiumViewer)return;
+    globeTrailCanvas=document.createElement('canvas');
+    globeTrailCanvas.style.cssText='position:absolute;left:0;top:0;width:100%;height:100%;pointer-events:none;z-index:9;';
+    cesiumViewer.container.appendChild(globeTrailCanvas);
+  }
+  function clearGlobeTrail(){
+    if(cesiumViewer){
+      if(globeTrailEntity) cesiumViewer.entities.remove(globeTrailEntity);
+      if(globePlaneEntity) cesiumViewer.entities.remove(globePlaneEntity);
+    }
+    globeTrailLegs=[]; globeLiveTrailEntity=null; globeTrailEntity=null; globePlaneEntity=null; globeTrailData=[];
+    if(globeTrailCanvas){ try{ globeTrailCanvas.getContext('2d').clearRect(0,0,globeTrailCanvas.width,globeTrailCanvas.height); }catch(e){} }
+    requestGlobeRender();
+  }
+  function trailCart(p){ return Cesium.Cartesian3.fromDegrees(p.lon,p.lat,60); }
+  function startLegTrail(prev,next){
+    ensureTrailCanvas();
+    var total=geodDistanceM(prev,next);
+    globeLiveTrailMinStep=Math.min(25000,Math.max(500,total/400));
+    var leg={pts:[{lat:prev.lat,lon:prev.lon}], cart:[trailCart(prev)], head:null};
+    globeTrailLegs.push(leg);
+    globeLiveTrailEntity=leg;
+  }
+  function addLegTrailPoint(pos,force){
+    var leg=globeLiveTrailEntity; if(!leg)return;
+    leg.head=trailCart(pos);
+    var last=leg.pts[leg.pts.length-1];
+    if(force){ if(last.lat===pos.lat&&last.lon===pos.lon){ leg.head=null; return; } }
+    else if(geodDistanceM(last,pos)<globeLiveTrailMinStep)return;
+    leg.pts.push({lat:pos.lat,lon:pos.lon}); leg.cart.push(leg.head);
+    if(force) leg.head=null;
+  }
+  function drawGlobeTrail(){
+    if(!cesiumViewer||!globeTrailCanvas)return;
+    var host=cesiumViewer.container, w=host.clientWidth, h=host.clientHeight, dpr=window.devicePixelRatio||1;
+    var cw=Math.round(w*dpr), ch=Math.round(h*dpr);
+    if(globeTrailCanvas.width!==cw) globeTrailCanvas.width=cw;
+    if(globeTrailCanvas.height!==ch) globeTrailCanvas.height=ch;
+    var ctx=globeTrailCanvas.getContext('2d');
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+    ctx.clearRect(0,0,w,h);
+    if(!globeTrailLegs.length)return;
+    var scene=cesiumViewer.scene;
+    if(!globeOccluder) globeOccluder=new Cesium.EllipsoidalOccluder(Cesium.Ellipsoid.WGS84,scene.camera.positionWC);
+    else globeOccluder.cameraPosition=scene.camera.positionWC;
+    ctx.lineWidth=3; ctx.lineCap='butt'; ctx.lineJoin='round';
+    ctx.strokeStyle='rgba(220,59,46,0.92)';
+    var DASH=9, GAP=6, PERIOD=DASH+GAP, M=80;
+    ctx.setLineDash([DASH,GAP]);
+    for(var L=0;L<globeTrailLegs.length;L++){
+      var leg=globeTrailLegs[L], list=leg.cart, n=list.length+(leg.head?1:0);
+      var acc=0, prevPt=null, inRun=false, runOff=0;
+      for(var i=0;i<n;i++){
+        var isHead=(i===list.length);
+        var c=isHead?leg.head:list[i];
+        var s=null;
+        try{ if(globeOccluder.isPointVisible(c)) s=Cesium.SceneTransforms.worldToWindowCoordinates(scene,c); }catch(e){ s=null; }
+        if(!s){ if(inRun){ ctx.lineDashOffset=-runOff; ctx.stroke(); inRun=false; } prevPt=null; continue; }
+        var sx=s.x, sy=s.y;
+        if(prevPt){
+          var dx=sx-prevPt.x, dy=sy-prevPt.y, len=Math.sqrt(dx*dx+dy*dy);
+          if(isHead){ // termina um pouco antes do avião para não riscar o ícone
+            var cut=Math.min(len,22); if(len>0){ sx=sx-dx/len*cut; sy=sy-dy/len*cut; }
+          }
+          var off=(Math.max(sx,prevPt.x)<-M||Math.min(sx,prevPt.x)>w+M||Math.max(sy,prevPt.y)<-M||Math.min(sy,prevPt.y)>h+M);
+          if(!off){
+            if(!inRun){ ctx.beginPath(); ctx.moveTo(prevPt.x,prevPt.y); inRun=true; runOff=acc%PERIOD; }
+            ctx.lineTo(sx,sy);
+          }else if(inRun){ ctx.lineDashOffset=-runOff; ctx.stroke(); inRun=false; }
+          acc+=len;
+        }
+        prevPt={x:s.x,y:s.y};
+      }
+      if(inRun){ ctx.lineDashOffset=-runOff; ctx.stroke(); }
+    }
+  }
+  // Se o usuário deu zoom/arrastou em visão livre, guarda a distância atual
+  // da câmera ao avião para o zoom NÃO mudar quando o acompanhamento voltar.
+  function captureGlobeFreeRange(lat,lon){
+    if(!cesiumViewer)return;
+    try{
+      var d=Cesium.Cartesian3.distance(cesiumViewer.camera.positionWC,Cesium.Cartesian3.fromDegrees(lon,lat));
+      if(isFinite(d)&&d>0) globeUserRange=Math.max(300,Math.min(16000000,d));
+    }catch(e){}
+  }
+  function globeLegRange(baseH){ return (globeUserRange!=null)?globeUserRange:baseH; }
+
   // Distância em metros entre dois pontos na esfera (fórmula haversine).
   function geodDistanceM(a,b){
     var la1=toRad(a.lat),lo1=toRad(a.lon),la2=toRad(b.lat),lo2=toRad(b.lon);
@@ -1915,46 +2025,73 @@ async function loadAirportsDatabase(){
     return /^[a-z]{2}$/.test(cc) ? 'https://cdnjs.cloudflare.com/ajax/libs/flag-icons/7.2.3/flags/4x3/'+cc+'.svg' : null;
   }
   function clearGlobeOverlays(){
-    globeLabelOverlays.forEach(function(o){ if(o.el&&o.el.parentNode) o.el.parentNode.removeChild(o.el); });
+    globeLabelOverlays.forEach(function(o){
+      if(o.el&&o.el.parentNode) o.el.parentNode.removeChild(o.el);
+      if(o.ent&&cesiumViewer) cesiumViewer.entities.remove(o.ent);
+    });
     globeLabelOverlays=[];
   }
   // Reposiciona as labels HTML após cada render (segue câmera/globo).
   function updateGlobeLabelOverlays(){
     if(!cesiumViewer)return;
     var scene=cesiumViewer.scene;
+    // Oclusão: labels de cidades que estão no lado oculto da Terra (atrás do
+    // horizonte, vistas da câmera) não aparecem — a Terra deixa de parecer transparente.
+    if(!globeOccluder) globeOccluder=new Cesium.EllipsoidalOccluder(Cesium.Ellipsoid.WGS84,scene.camera.positionWC);
+    else globeOccluder.cameraPosition=scene.camera.positionWC;
     for(var i=0;i<globeLabelOverlays.length;i++){
       var o=globeLabelOverlays[i];
       var pos=null;
-      try{ pos=Cesium.SceneTransforms.worldToWindowCoordinates(scene,Cesium.Cartesian3.fromDegrees(o.wp.lon,o.wp.lat)); }catch(e){ pos=null; }
+      try{
+        var wcart=Cesium.Cartesian3.fromDegrees(o.wp.lon,o.wp.lat,0);
+        if(globeOccluder.isPointVisible(wcart)) pos=Cesium.SceneTransforms.worldToWindowCoordinates(scene,wcart);
+      }catch(e){ pos=null; }
       if(!pos){ o.el.style.display='none'; continue; }
       o.el.style.display='block';
       o.el.style.left=Math.round(pos.x)+'px';
       o.el.style.top=Math.round(pos.y)+'px';
     }
+    drawGlobeTrail();
   }
+  // Sincronização INCREMENTAL: só cria o que ainda não existe e só remove o
+  // que saiu da lista. Antes, a cada parada tudo era apagado e recriado
+  // (pontos + labels), o que causava uma "piscada" em cada cidade.
   function syncGlobeLabels(wps){
     if(!cesiumViewer)return;
     globeLabelEntities.forEach(function(e){ cesiumViewer.entities.remove(e); });
     globeLabelEntities=[];
-    clearGlobeOverlays();
     if(!globeLabelHost){
       globeLabelHost=document.createElement('div');
       globeLabelHost.style.cssText='position:absolute;left:0;top:0;width:100%;height:100%;pointer-events:none;overflow:hidden;z-index:10;';
       cesiumViewer.container.appendChild(globeLabelHost);
     }
+    var wanted={}, order=[];
     (wps||[]).forEach(function(wp){
-      // Ponto do aeroporto (igual ao mapa 2D).
-      globeLabelEntities.push(cesiumViewer.entities.add({
+      var k=wp.lat+'|'+wp.lon;
+      if(wanted[k])return;
+      wanted[k]=wp; order.push(k);
+    });
+    // remove os que não são mais desejados
+    globeLabelOverlays=globeLabelOverlays.filter(function(o){
+      if(wanted[o.key])return true;
+      if(o.el&&o.el.parentNode) o.el.parentNode.removeChild(o.el);
+      if(o.ent) cesiumViewer.entities.remove(o.ent);
+      return false;
+    });
+    var have={}; globeLabelOverlays.forEach(function(o){ have[o.key]=1; });
+    order.forEach(function(k){
+      if(have[k])return;
+      var wp=wanted[k];
+      var ent=cesiumViewer.entities.add({
         position:Cesium.Cartesian3.fromDegrees(wp.lon,wp.lat),
         point:{ pixelSize:7, color:Cesium.Color.fromCssColorString('#0b806d'), outlineColor:Cesium.Color.WHITE, outlineWidth:1.5 }
-      }));
-      // Label HTML nítida com o nome e a bandeira do país (igual aos outros mapas).
+      });
       var el=document.createElement('div');
       el.className='globe-stop-label';
       el.innerHTML='<span class="lbl-city">' + String(wp.muni||wp.name||wp.icao||'').trim() + '</span>' + flagIconHtml(wp.country);
       el.style.display='none';
       globeLabelHost.appendChild(el);
-      globeLabelOverlays.push({wp:wp, el:el});
+      globeLabelOverlays.push({wp:wp, el:el, ent:ent, key:k});
     });
     updateGlobeLabelOverlays();
     requestGlobeRender();
@@ -1987,6 +2124,8 @@ async function loadAirportsDatabase(){
     }
     function updateGlobeStatic(){
       if(!globeReady||!cesiumViewer)return;
+      if(typeof isBusy!=='undefined' && isBusy)return;   // durante o voo a rota planejada nunca é redesenhada
+      clearGlobeTrail();
       clearGlobeLegs();
       route.forEach(function(wp,i){
         if(i>0){
@@ -2201,11 +2340,18 @@ async function loadAirportsDatabase(){
       // Aqui apenas rearmamos o acompanhamento automático e apontamos a
       // câmera para a partida da perna.
       globeAutoFollowPaused=false;
+      // Pernas seguintes: NÃO reposiciona a câmera nem muda o zoom (a câmera
+      // já está no aeroporto, acompanhando o avião); só o primeiro aeroporto
+      // recebe a vista inicial.
+      if(cesiumViewer && globeFirstLegDone){
+        resolve(token===playbackToken);
+        return;
+      }
       if(cesiumViewer){
         // Vista de mapa (quase de cima, norte para cima) no aeroporto,
         // parecido com o modo "street" do Google Earth; a câmera só se afasta
         // para virar globo conforme o avião voa.
-        var airportH=Math.min(zoomToHeight(zoom),60000);
+        var airportH=(globeUserRange!=null)?globeUserRange:Math.min(zoomToHeight(zoom),60000);
         cesiumViewer.camera.lookAt(Cesium.Cartesian3.fromDegrees(p.lon,p.lat),
           new Cesium.HeadingPitchRange(0,Cesium.Math.toRadians(-89.2),airportH));
         requestGlobeRender();
@@ -2247,6 +2393,7 @@ async function loadAirportsDatabase(){
     // Trava o afastamento máximo em 16 Mm: dá para ver o globo inteiro
     // (toda a trajetória) sem ficar tão longe que vire um pontinho no escuro.
     range=Math.max(1,Math.min(range,16000000));
+    globeCurRange=range;
     // Vista SEMPRE norte-para-cima e quase de cima (como um mapa). Assim o
     // avião GIRA conforme a angulação real de cada perna (sua proa) em vez de
     // ficar "fixo na vertical" — e no zoom máximo aparece o globo completo.
@@ -2284,21 +2431,8 @@ async function loadAirportsDatabase(){
     var elapsed=0,lastTs=null;
     // Rastro ACUMULATIVO: o avião deixa a linha pra trás enquanto voa,
     // formando uma trilha contínua da mesma cor da rota planejada.
-    if(!globeTrailData.length||globeTrailData[globeTrailData.length-1].lat!==prev.lat||globeTrailData[globeTrailData.length-1].lon!==prev.lon){
-      globeTrailData.push({lat:prev.lat,lon:prev.lon});
-    }
-    if(!globeTrailEntity){
-      globeTrailEntity=cesiumViewer.entities.add({
-        polyline:{
-          // CallbackProperty: o Cesium reavalia os pontos em todo frame,
-          // então o rastro cresce na tela sem depender de troca manual.
-          positions:new Cesium.CallbackProperty(function(){ return citiesToDegreesArray(globeTrailData); }, false),
-          width:3,
-          material:new Cesium.PolylineDashMaterialProperty({ color:Cesium.Color.fromCssColorString('#DC3B2E').withAlpha(0.9), dashLength:18, gap:12 }),
-          arcType:Cesium.ArcType.GEODESIC
-        }
-      });
-    }
+    clearGlobeLegs();
+    startLegTrail(prev,next);
     if(!globePlaneEntity){
       globePlaneEntity=cesiumViewer.entities.add({
         position:Cesium.Cartesian3.fromDegrees(prev.lon,prev.lat),
@@ -2324,17 +2458,20 @@ async function loadAirportsDatabase(){
 
     var settled=false,start=null;
     var baseH=legViewHeight(prev,next);
-    followGlobeAircraft(prev.lat,prev.lon,baseH*globeFollowScale,bearing(prev,next));
+    followGlobeAircraft(prev.lat,prev.lon,globeLegRange(baseH),bearing(prev,next));
 
     function cleanup(aborted){
       if(settled)return;settled=true;
       if(playbackRaf){cancelAnimationFrame(playbackRaf);playbackRaf=null;}
       if(playbackResume===resume){playbackResume=null;}
       if(activePlaybackCancel===cancel)activePlaybackCancel=null;
-      setGlobeController(true);
-      releaseGlobeFollow();
-      globeFollowTarget=null;
+      // Entre uma perna e outra a câmera NÃO é solta: o acompanhamento segue
+      // contínuo (sem piscada, sem mudar o zoom). Só é solto ao abortar, ao
+      // terminar o voo (playRoute) ou quando o usuário está em visão livre.
+      if(globeAutoFollowPaused){ captureGlobeFreeRange(next.lat,next.lon); setGlobeController(true); releaseGlobeFollow(); }
+      if(aborted){ setGlobeController(true); releaseGlobeFollow(); globeFollowTarget=null; }
       if(!aborted){
+        addLegTrailPoint({lat:next.lat,lon:next.lon},true);
         // Como no mapa 2D: a label da cidade (nome + bandeira) surge na chegada.
         pushLabelIfMissing(next);
         syncGlobeLabels(globePlaybackLabels);
@@ -2356,16 +2493,16 @@ async function loadAirportsDatabase(){
       var t=Math.min(1,elapsed/duration),e=easeInOutQuad(t),pos=greatCirclePosition(prev,next,e);
       globePlaneEntity.position=Cesium.Cartesian3.fromDegrees(pos.lon,pos.lat);
       globePlaneEntity.billboard.rotation=Cesium.Math.toRadians(-bearing(prev,next));
-      globeTrailData.push(pos);
-      if(globeTrailData.length>5000)globeTrailData.splice(0,globeTrailData.length-5000);
+      addLegTrailPoint(pos,false);
       if(!globeAutoFollowPaused){
-        followGlobeAircraft(pos.lat,pos.lon,baseH*globeFollowScale,bearing(prev,next));
+        followGlobeAircraft(pos.lat,pos.lon,globeLegRange(baseH),bearing(prev,next));
       }else{
         var sp=globeScreenPos(pos.lat,pos.lon);
         if(sp&&sp.off){
+          captureGlobeFreeRange(pos.lat,pos.lon);
           globeAutoFollowPaused=false;
           setGlobeController(false);
-          followGlobeAircraft(pos.lat,pos.lon,baseH*globeFollowScale,bearing(prev,next));
+          followGlobeAircraft(pos.lat,pos.lon,globeLegRange(baseH),bearing(prev,next));
         }
       }
       requestGlobeRender();
@@ -2555,9 +2692,12 @@ async function loadAirportsDatabase(){
       // no waypoint labels and no static markers. The trail is created
       // progressively by animateFlightGlobe() as the aircraft moves.
       setGlobePaths([]);
-      globeTrailData = [];
+      clearGlobeTrail();
       globePlaybackLabels = [route[0]];
       globePlaneEl = null;
+      globeFollowScale = 1; globeCurRange = null; globeAutoFollowPaused = false; globeFollowTarget = null;
+      // Zoom FIXO durante todo o voo: começa na altura automática da 1ª perna e só muda se o usuário mexer.
+      globeUserRange = (route.length>1) ? legViewHeight(route[0],route[1]) : null;
       resizeGlobe();
     } else {
       addStopMarker(route[0], true);
@@ -2578,6 +2718,7 @@ async function loadAirportsDatabase(){
       }
     } finally {
       if(token !== playbackToken) return;
+      if(settings.mapStyle === 'globe' && cesiumViewer){ setGlobeController(true); releaseGlobeFollow(); globeFollowTarget = null; }
       document.getElementById('app').classList.add('playback-finished');
       playBtn.disabled = false;
       playBtn.innerHTML = '<span class="ico">&#9654;</span> Reproduzir voo';
@@ -3776,11 +3917,11 @@ async function loadAirportsDatabase(){
         lineLayer.clearLayers();
         playbackTrailLayer.clearLayers();
         if(planeMarker){ map.removeLayer(planeMarker); planeMarker=null; }
-        globeTrailData=[];
+        clearGlobeTrail();
         globePlaybackLabels=[];
         globePlaneEntity=null;
         globeAutoFollowPaused=false;
-        globeFollowScale=1;
+        globeFollowScale=1; globeUserRange=null; globeCurRange=null;
         globeFollowTarget=null;
 
         settings.mapStyle=select.value;
