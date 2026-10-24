@@ -462,5 +462,13 @@
     "country": "TH",
     "lat": 13.9126,
     "lon": 100.607002
+  },
+  {
+    "icao": "VTSP",
+    "name": "Phuket International Airport",
+    "muni": "Phuket",
+    "country": "TH",
+    "lat": 8.113257,
+    "lon": 98.3174
   }
 ]
