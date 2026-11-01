@@ -1,6 +1,6 @@
 {
   "schema": "voltaomundo.planning.v1",
-  "updatedAt": "2026-11-01T10:13:20.588Z",
+  "updatedAt": "2026-11-01T13:02:35.710Z",
   "title": "Volta ao Mundo",
   "description": "Planejamento previsto da jornada; a execução pode ser adaptada conforme autonomia e condições operacionais.",
   "totalFlights": 117,
@@ -470,7 +470,7 @@
           "id": "116",
           "from": "Bandar Lampung",
           "fromIcao": "WILL",
-          "to": "bali",
+          "to": "Bali",
           "toIcao": "WADD"
         }
       ]

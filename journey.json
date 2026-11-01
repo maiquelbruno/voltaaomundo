@@ -1,6 +1,6 @@
 {
   "schema": "voltaomundo.journey.v1",
-  "updatedAt": "2026-11-01T12:57:04.648Z",
+  "updatedAt": "2026-11-01T13:02:29.752Z",
   "title": "Volta ao Mundo",
   "progress": {
     "completedFlights": 59,
@@ -31,7 +31,7 @@
     "legId": 54
   },
   "next": {
-    "city": "bali",
+    "city": "Bali",
     "country": "Indonésia",
     "icao": "WADD",
     "airportName": "",
@@ -1048,7 +1048,7 @@
         "icao": "WILL"
       },
       "to": {
-        "name": "bali",
+        "name": "Bali",
         "icao": "WADD"
       },
       "completed": false,
