@@ -1,17 +1,17 @@
 {
   "schema": "voltaomundo.journey.v1",
-  "updatedAt": "2026-10-24T11:46:39.611Z",
+  "updatedAt": "2026-10-25T14:17:43.302Z",
   "title": "Volta ao Mundo",
   "progress": {
-    "completedFlights": 57,
+    "completedFlights": 58,
     "totalFlights": 116,
-    "percent": 49
+    "percent": 50
   },
   "stats": {
-    "landings": 57,
-    "kilometers": 34895,
-    "flightMinutes": 7299,
-    "flightTime": "121h39"
+    "landings": 58,
+    "kilometers": 35962,
+    "flightMinutes": 7510,
+    "flightTime": "125h10"
   },
   "continents": {
     "completed": 4,
@@ -24,18 +24,18 @@
     ]
   },
   "current": {
-    "city": "Phuket",
-    "country": "Tailândia",
-    "icao": "VTSP",
-    "airportName": "",
-    "legId": 52
-  },
-  "next": {
     "city": "Johor",
     "country": "Malásia",
     "icao": "WMKJ",
     "airportName": "",
     "legId": 53
+  },
+  "next": {
+    "city": "Bali",
+    "country": "Indonésia",
+    "icao": "WADD",
+    "airportName": "",
+    "legId": 54
   },
   "legs": [
     {
@@ -1017,12 +1017,12 @@
         "name": "Johor",
         "icao": "WMKJ"
       },
-      "completed": false,
-      "nm": 0,
-      "duration": "0h00",
+      "completed": true,
+      "nm": 576,
+      "duration": "3h31",
       "chapter": "Ásia",
       "continent": "Ásia",
-      "km": 0
+      "km": 1067
     },
     {
       "id": 54,

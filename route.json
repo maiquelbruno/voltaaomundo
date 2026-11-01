@@ -470,5 +470,13 @@
     "country": "TH",
     "lat": 8.113257,
     "lon": 98.3174
+  },
+  {
+    "icao": "WMKJ",
+    "name": "Senai International Airport",
+    "muni": "Johor Bahru",
+    "country": "MY",
+    "lat": 1.64131,
+    "lon": 103.669998
   }
 ]
