@@ -1,10 +1,10 @@
 {
   "schema": "voltaomundo.journey.v1",
-  "updatedAt": "2026-10-25T14:17:43.302Z",
+  "updatedAt": "2026-11-01T10:13:16.149Z",
   "title": "Volta ao Mundo",
   "progress": {
     "completedFlights": 58,
-    "totalFlights": 116,
+    "totalFlights": 117,
     "percent": 50
   },
   "stats": {
@@ -31,9 +31,9 @@
     "legId": 53
   },
   "next": {
-    "city": "Bali",
-    "country": "Indonésia",
-    "icao": "WADD",
+    "city": "Bandar Lampung",
+    "country": "",
+    "icao": "WILL",
     "airportName": "",
     "legId": 54
   },
@@ -1031,7 +1031,24 @@
         "icao": "WMKJ"
       },
       "to": {
-        "name": "Bali",
+        "name": "Bandar Lampung",
+        "icao": "WILL"
+      },
+      "completed": false,
+      "nm": 0,
+      "duration": "0h00",
+      "chapter": "Ásia",
+      "continent": "Ásia",
+      "km": 0
+    },
+    {
+      "id": 116,
+      "from": {
+        "name": "Bandar Lampung",
+        "icao": "WILL"
+      },
+      "to": {
+        "name": "bali",
         "icao": "WADD"
       },
       "completed": false,
