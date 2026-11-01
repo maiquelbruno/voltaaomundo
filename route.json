@@ -478,5 +478,13 @@
     "country": "MY",
     "lat": 1.64131,
     "lon": 103.669998
+  },
+  {
+    "icao": "WILL",
+    "name": "Radin Inten II International Airport",
+    "muni": "Bandar Lampung",
+    "country": "ID",
+    "lat": -5.246803,
+    "lon": 105.182531
   }
 ]
