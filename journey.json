@@ -1,17 +1,17 @@
 {
   "schema": "voltaomundo.journey.v1",
-  "updatedAt": "2026-11-01T10:13:16.149Z",
+  "updatedAt": "2026-11-01T12:57:04.648Z",
   "title": "Volta ao Mundo",
   "progress": {
-    "completedFlights": 58,
+    "completedFlights": 59,
     "totalFlights": 117,
     "percent": 50
   },
   "stats": {
-    "landings": 58,
-    "kilometers": 35962,
-    "flightMinutes": 7510,
-    "flightTime": "125h10"
+    "landings": 59,
+    "kilometers": 36840,
+    "flightMinutes": 7694,
+    "flightTime": "128h14"
   },
   "continents": {
     "completed": 4,
@@ -24,18 +24,18 @@
     ]
   },
   "current": {
-    "city": "Johor",
-    "country": "Malásia",
-    "icao": "WMKJ",
-    "airportName": "",
-    "legId": 53
-  },
-  "next": {
     "city": "Bandar Lampung",
     "country": "",
     "icao": "WILL",
     "airportName": "",
     "legId": 54
+  },
+  "next": {
+    "city": "bali",
+    "country": "Indonésia",
+    "icao": "WADD",
+    "airportName": "",
+    "legId": 116
   },
   "legs": [
     {
@@ -1034,12 +1034,12 @@
         "name": "Bandar Lampung",
         "icao": "WILL"
       },
-      "completed": false,
-      "nm": 0,
-      "duration": "0h00",
+      "completed": true,
+      "nm": 474,
+      "duration": "3h04",
       "chapter": "Ásia",
       "continent": "Ásia",
-      "km": 0
+      "km": 878
     },
     {
       "id": 116,
