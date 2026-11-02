@@ -494,5 +494,13 @@
     "country": "ID",
     "lat": -8.748409,
     "lon": 115.167123
+  },
+  {
+    "icao": "WPMN",
+    "name": "Maliana Airport",
+    "muni": "Maliana",
+    "country": "TL",
+    "lat": -8.97224,
+    "lon": 125.214996
   }
 ]
