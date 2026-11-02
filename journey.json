@@ -1,17 +1,17 @@
 {
   "schema": "voltaomundo.journey.v1",
-  "updatedAt": "2026-11-01T13:02:29.752Z",
+  "updatedAt": "2026-11-02T00:31:56.231Z",
   "title": "Volta ao Mundo",
   "progress": {
-    "completedFlights": 59,
+    "completedFlights": 60,
     "totalFlights": 117,
-    "percent": 50
+    "percent": 51
   },
   "stats": {
-    "landings": 59,
-    "kilometers": 36840,
-    "flightMinutes": 7694,
-    "flightTime": "128h14"
+    "landings": 60,
+    "kilometers": 38031,
+    "flightMinutes": 8084,
+    "flightTime": "134h44"
   },
   "continents": {
     "completed": 4,
@@ -24,18 +24,18 @@
     ]
   },
   "current": {
-    "city": "Bandar Lampung",
-    "country": "",
-    "icao": "WILL",
-    "airportName": "",
-    "legId": 54
-  },
-  "next": {
-    "city": "Bali",
+    "city": "bali",
     "country": "Indonésia",
     "icao": "WADD",
     "airportName": "",
     "legId": 116
+  },
+  "next": {
+    "city": "Darwin",
+    "country": "Austrália",
+    "icao": "YPDN",
+    "airportName": "",
+    "legId": 55
   },
   "legs": [
     {
@@ -1048,15 +1048,15 @@
         "icao": "WILL"
       },
       "to": {
-        "name": "Bali",
+        "name": "bali",
         "icao": "WADD"
       },
-      "completed": false,
-      "nm": 0,
-      "duration": "0h00",
+      "completed": true,
+      "nm": 643,
+      "duration": "6h30",
       "chapter": "Ásia",
       "continent": "Ásia",
-      "km": 0
+      "km": 1191
     },
     {
       "id": 55,
