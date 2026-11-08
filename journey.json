@@ -1,17 +1,17 @@
 {
   "schema": "voltaomundo.journey.v1",
-  "updatedAt": "2026-11-08T12:18:20.608Z",
+  "updatedAt": "2026-11-08T18:48:01.418Z",
   "title": "Volta ao Mundo",
   "progress": {
-    "completedFlights": 63,
-    "totalFlights": 118,
-    "percent": 53
+    "completedFlights": 64,
+    "totalFlights": 119,
+    "percent": 54
   },
   "stats": {
-    "landings": 63,
-    "kilometers": 40768,
-    "flightMinutes": 8675,
-    "flightTime": "144h35"
+    "landings": 64,
+    "kilometers": 41683,
+    "flightMinutes": 8851,
+    "flightTime": "147h31"
   },
   "continents": {
     "completed": 5,
@@ -25,18 +25,18 @@
     ]
   },
   "current": {
-    "city": "Dili",
-    "country": "Timor-Leste",
-    "icao": "WPDL",
+    "city": "Luwuk",
+    "country": "Indonésia",
+    "icao": "WAFW",
     "airportName": "",
-    "legId": 56
+    "legId": 57
   },
   "next": {
     "city": "General Santos",
     "country": "Filipinas",
     "icao": "RPMR",
     "airportName": "",
-    "legId": 57
+    "legId": 118
   },
   "legs": [
     {
@@ -1115,6 +1115,23 @@
       "from": {
         "name": "Dili",
         "icao": "WPDL"
+      },
+      "to": {
+        "name": "Luwuk",
+        "icao": "WAFW"
+      },
+      "completed": true,
+      "nm": 494,
+      "duration": "2h56",
+      "chapter": "Extremo Oriente",
+      "continent": "Ásia",
+      "km": 915
+    },
+    {
+      "id": 118,
+      "from": {
+        "name": "Luwuk",
+        "icao": "WAFW"
       },
       "to": {
         "name": "General Santos",

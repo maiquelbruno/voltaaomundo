@@ -1,9 +1,9 @@
 {
   "schema": "voltaomundo.planning.v1",
-  "updatedAt": "2026-11-08T11:00:06.576Z",
+  "updatedAt": "2026-11-08T18:48:05.352Z",
   "title": "Volta ao Mundo",
   "description": "Planejamento previsto da jornada; a execução pode ser adaptada conforme autonomia e condições operacionais.",
-  "totalFlights": 118,
+  "totalFlights": 119,
   "continents": 5,
   "chapters": [
     {
@@ -512,6 +512,13 @@
           "id": "57",
           "from": "Dili",
           "fromIcao": "WPDL",
+          "to": "Luwuk",
+          "toIcao": "WAFW"
+        },
+        {
+          "id": "118",
+          "from": "Luwuk",
+          "fromIcao": "WAFW",
           "to": "General Santos",
           "toIcao": "RPMR"
         },
