@@ -1,17 +1,17 @@
 {
   "schema": "voltaomundo.journey.v1",
-  "updatedAt": "2026-11-08T11:00:02.296Z",
+  "updatedAt": "2026-11-08T12:18:20.608Z",
   "title": "Volta ao Mundo",
   "progress": {
-    "completedFlights": 62,
+    "completedFlights": 63,
     "totalFlights": 118,
     "percent": 53
   },
   "stats": {
-    "landings": 62,
-    "kilometers": 40011,
-    "flightMinutes": 8534,
-    "flightTime": "142h14"
+    "landings": 63,
+    "kilometers": 40768,
+    "flightMinutes": 8675,
+    "flightTime": "144h35"
   },
   "continents": {
     "completed": 5,
@@ -25,18 +25,18 @@
     ]
   },
   "current": {
-    "city": "Darwin",
-    "country": "Austrália",
-    "icao": "YPDN",
-    "airportName": "",
-    "legId": 117
-  },
-  "next": {
     "city": "Dili",
     "country": "Timor-Leste",
     "icao": "WPDL",
     "airportName": "",
     "legId": 56
+  },
+  "next": {
+    "city": "General Santos",
+    "country": "Filipinas",
+    "icao": "RPMR",
+    "airportName": "",
+    "legId": 57
   },
   "legs": [
     {
@@ -1103,12 +1103,12 @@
         "name": "Dili",
         "icao": "WPDL"
       },
-      "completed": false,
-      "nm": 0,
-      "duration": "0h00",
+      "completed": true,
+      "nm": 409,
+      "duration": "2h21",
       "chapter": "Timor & Oceania",
       "continent": "Oceania",
-      "km": 0
+      "km": 757
     },
     {
       "id": 57,
