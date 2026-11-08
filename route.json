@@ -510,5 +510,13 @@
     "country": "AU",
     "lat": -12.41497,
     "lon": 130.88185
+  },
+  {
+    "icao": "WPDL",
+    "name": "Presidente Nicolau Lobato International Airport",
+    "muni": "Dili",
+    "country": "TL",
+    "lat": -8.546562,
+    "lon": 125.524507
   }
 ]
