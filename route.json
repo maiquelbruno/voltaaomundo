@@ -502,5 +502,13 @@
     "country": "TL",
     "lat": -8.97224,
     "lon": 125.214996
+  },
+  {
+    "icao": "YPDN",
+    "name": "Darwin International Airport / RAAF Darwin",
+    "muni": "Darwin",
+    "country": "AU",
+    "lat": -12.41497,
+    "lon": 130.88185
   }
 ]
