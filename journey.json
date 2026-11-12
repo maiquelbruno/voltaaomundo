@@ -1,17 +1,17 @@
 {
   "schema": "voltaomundo.journey.v1",
-  "updatedAt": "2026-11-08T18:48:01.418Z",
+  "updatedAt": "2026-11-12T00:22:34.797Z",
   "title": "Volta ao Mundo",
   "progress": {
-    "completedFlights": 64,
+    "completedFlights": 65,
     "totalFlights": 119,
-    "percent": 54
+    "percent": 55
   },
   "stats": {
-    "landings": 64,
-    "kilometers": 41683,
-    "flightMinutes": 8851,
-    "flightTime": "147h31"
+    "landings": 65,
+    "kilometers": 42583,
+    "flightMinutes": 9035,
+    "flightTime": "150h35"
   },
   "continents": {
     "completed": 5,
@@ -25,18 +25,18 @@
     ]
   },
   "current": {
-    "city": "Luwuk",
-    "country": "Indonésia",
-    "icao": "WAFW",
-    "airportName": "",
-    "legId": 57
-  },
-  "next": {
     "city": "General Santos",
     "country": "Filipinas",
     "icao": "RPMR",
     "airportName": "",
     "legId": 118
+  },
+  "next": {
+    "city": "Taipei",
+    "country": "Taiwan",
+    "icao": "RCSS",
+    "airportName": "",
+    "legId": 58
   },
   "legs": [
     {
@@ -1137,12 +1137,12 @@
         "name": "General Santos",
         "icao": "RPMR"
       },
-      "completed": false,
-      "nm": 0,
-      "duration": "0h00",
+      "completed": true,
+      "nm": 486,
+      "duration": "3h04",
       "chapter": "Extremo Oriente",
       "continent": "Ásia",
-      "km": 0
+      "km": 900
     },
     {
       "id": 58,

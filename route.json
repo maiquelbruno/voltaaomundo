@@ -518,5 +518,13 @@
     "country": "TL",
     "lat": -8.546562,
     "lon": 125.524507
+  },
+  {
+    "icao": "RPMR",
+    "name": "General Santos International Airport",
+    "muni": "General Santos",
+    "country": "PH",
+    "lat": 6.057208,
+    "lon": 125.096243
   }
 ]
