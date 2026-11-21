@@ -526,5 +526,21 @@
     "country": "PH",
     "lat": 6.057208,
     "lon": 125.096243
+  },
+  {
+    "icao": "RPUN",
+    "name": "Naga Airport",
+    "muni": "Naga",
+    "country": "PH",
+    "lat": 13.58489990234375,
+    "lon": 123.2699966430664
+  },
+  {
+    "icao": "RCSS",
+    "name": "Taipei Songshan International Airport",
+    "muni": "Taipei (Songshan)",
+    "country": "TW",
+    "lat": 25.067244,
+    "lon": 121.552822
   }
 ]

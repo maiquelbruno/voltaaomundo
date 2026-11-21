@@ -1,17 +1,17 @@
 {
   "schema": "voltaomundo.journey.v1",
-  "updatedAt": "2026-11-12T00:22:34.797Z",
+  "updatedAt": "2026-11-21T03:26:28.898Z",
   "title": "Volta ao Mundo",
   "progress": {
-    "completedFlights": 65,
-    "totalFlights": 119,
-    "percent": 55
+    "completedFlights": 67,
+    "totalFlights": 120,
+    "percent": 56
   },
   "stats": {
-    "landings": 65,
-    "kilometers": 42583,
-    "flightMinutes": 9035,
-    "flightTime": "150h35"
+    "landings": 67,
+    "kilometers": 44841,
+    "flightMinutes": 9486,
+    "flightTime": "158h06"
   },
   "continents": {
     "completed": 5,
@@ -25,18 +25,18 @@
     ]
   },
   "current": {
-    "city": "General Santos",
-    "country": "Filipinas",
-    "icao": "RPMR",
-    "airportName": "",
-    "legId": 118
-  },
-  "next": {
     "city": "Taipei",
     "country": "Taiwan",
     "icao": "RCSS",
     "airportName": "",
-    "legId": 58
+    "legId": 120
+  },
+  "next": {
+    "city": "Seoul",
+    "country": "Coreia do Sul",
+    "icao": "RKSI",
+    "airportName": "",
+    "legId": 59
   },
   "legs": [
     {
@@ -1151,15 +1151,32 @@
         "icao": "RPMR"
       },
       "to": {
+        "name": "Naga",
+        "icao": "RPUN"
+      },
+      "completed": true,
+      "nm": 515,
+      "duration": "3h04",
+      "chapter": "Extremo Oriente",
+      "continent": "Ásia",
+      "km": 954
+    },
+    {
+      "id": 120,
+      "from": {
+        "name": "Naga",
+        "icao": "RPUN"
+      },
+      "to": {
         "name": "Taipei",
         "icao": "RCSS"
       },
-      "completed": false,
-      "nm": 0,
-      "duration": "0h00",
+      "completed": true,
+      "nm": 704,
+      "duration": "4h27",
       "chapter": "Extremo Oriente",
       "continent": "Ásia",
-      "km": 0
+      "km": 1304
     },
     {
       "id": 59,

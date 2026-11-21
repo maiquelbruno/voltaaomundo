@@ -1,9 +1,9 @@
 {
   "schema": "voltaomundo.planning.v1",
-  "updatedAt": "2026-11-12T00:22:38.676Z",
+  "updatedAt": "2026-11-20T15:29:27.618Z",
   "title": "Volta ao Mundo",
   "description": "Planejamento previsto da jornada; a execução pode ser adaptada conforme autonomia e condições operacionais.",
-  "totalFlights": 119,
+  "totalFlights": 120,
   "continents": 5,
   "chapters": [
     {
@@ -526,6 +526,13 @@
           "id": "58",
           "from": "General Santos",
           "fromIcao": "RPMR",
+          "to": "Naga",
+          "toIcao": "RPUN"
+        },
+        {
+          "id": "120",
+          "from": "Naga",
+          "fromIcao": "RPUN",
           "to": "Taipei",
           "toIcao": "RCSS"
         },
