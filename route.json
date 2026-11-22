@@ -542,5 +542,13 @@
     "country": "TW",
     "lat": 25.067244,
     "lon": 121.552822
+  },
+  {
+    "icao": "RKSI",
+    "name": "Incheon International Airport",
+    "muni": "Seoul",
+    "country": "KR",
+    "lat": 37.469101,
+    "lon": 126.450996
   }
 ]
