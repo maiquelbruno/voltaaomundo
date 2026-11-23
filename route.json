@@ -544,11 +544,19 @@
     "lon": 121.552822
   },
   {
-    "icao": "RKSI",
-    "name": "Incheon International Airport",
-    "muni": "Seoul",
+    "icao": "RKPC",
+    "name": "Jeju International Airport",
+    "muni": "Jeju City",
     "country": "KR",
-    "lat": 37.469101,
-    "lon": 126.450996
+    "lat": 33.512058,
+    "lon": 126.492548
+  },
+  {
+    "icao": "UHWW",
+    "name": "Vladivostok International Airport",
+    "muni": "Artyom",
+    "country": "RU",
+    "lat": 43.396256,
+    "lon": 132.148155
   }
 ]

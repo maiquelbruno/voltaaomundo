@@ -1,17 +1,17 @@
 {
   "schema": "voltaomundo.journey.v1",
-  "updatedAt": "2026-11-21T03:26:28.898Z",
+  "updatedAt": "2026-11-23T02:56:50.138Z",
   "title": "Volta ao Mundo",
   "progress": {
-    "completedFlights": 67,
+    "completedFlights": 69,
     "totalFlights": 120,
-    "percent": 56
+    "percent": 57
   },
   "stats": {
-    "landings": 67,
-    "kilometers": 44841,
-    "flightMinutes": 9486,
-    "flightTime": "158h06"
+    "landings": 69,
+    "kilometers": 47219,
+    "flightMinutes": 9932,
+    "flightTime": "165h32"
   },
   "continents": {
     "completed": 5,
@@ -25,18 +25,18 @@
     ]
   },
   "current": {
-    "city": "Taipei",
-    "country": "Taiwan",
-    "icao": "RCSS",
+    "city": "Vladivostok",
+    "country": "Rússia",
+    "icao": "UHWW",
     "airportName": "",
-    "legId": 120
+    "legId": 60
   },
   "next": {
-    "city": "Seoul",
-    "country": "Coreia do Sul",
-    "icao": "RKSI",
+    "city": "Khabarovsk",
+    "country": "Rússia",
+    "icao": "UHHH",
     "airportName": "",
-    "legId": 59
+    "legId": 61
   },
   "legs": [
     {
@@ -1185,32 +1185,32 @@
         "icao": "RCSS"
       },
       "to": {
-        "name": "Seoul",
-        "icao": "RKSI"
+        "name": "Jeju City",
+        "icao": "RKPC"
       },
-      "completed": false,
-      "nm": 0,
-      "duration": "0h00",
+      "completed": true,
+      "nm": 604,
+      "duration": "3h45",
       "chapter": "Extremo Oriente",
       "continent": "Ásia",
-      "km": 0
+      "km": 1119
     },
     {
       "id": 60,
       "from": {
-        "name": "Seoul",
-        "icao": "RKSI"
+        "name": "Jeju City",
+        "icao": "RKPC"
       },
       "to": {
         "name": "Vladivostok",
         "icao": "UHWW"
       },
-      "completed": false,
-      "nm": 0,
-      "duration": "0h00",
+      "completed": true,
+      "nm": 680,
+      "duration": "3h41",
       "chapter": "Extremo Oriente",
       "continent": "Ásia",
-      "km": 0
+      "km": 1259
     },
     {
       "id": 61,

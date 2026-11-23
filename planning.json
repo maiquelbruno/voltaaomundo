@@ -1,9 +1,9 @@
 {
   "schema": "voltaomundo.planning.v1",
-  "updatedAt": "2026-11-22T08:36:28.051Z",
+  "updatedAt": "2026-11-23T02:56:55.096Z",
   "title": "Volta ao Mundo",
   "description": "Planejamento previsto da jornada; a execução pode ser adaptada conforme autonomia e condições operacionais.",
-  "totalFlights": 121,
+  "totalFlights": 120,
   "continents": 5,
   "chapters": [
     {
@@ -544,16 +544,9 @@
           "toIcao": "RKPC"
         },
         {
-          "id": "122",
+          "id": "60",
           "from": "Jeju City",
           "fromIcao": "RKPC",
-          "to": "Seoul",
-          "toIcao": "RKSI"
-        },
-        {
-          "id": "60",
-          "from": "Seoul",
-          "fromIcao": "RKSI",
           "to": "Vladivostok",
           "toIcao": "UHWW"
         },
